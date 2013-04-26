@@ -1,0 +1,23 @@
+!!!
+html
+  head
+    script(src="js/lib/jquery.min.js")
+    script(src="js/lib/handlebars-1.0.rc.1.min.js")
+    script(src="js/lib/ember-latest.js")
+    script(src="js/lib/underscore.js")
+    script(src="js/lib/backbone.js")
+  body
+    #container
+      #banner
+        h1 CloudCubbie
+      #sidebar
+        ul
+          li 
+            a(href="/locker") Locker
+          li
+            a(href="/user") User
+          li
+            a(href="/site") Site
+      #content
+        block content
+        block footer

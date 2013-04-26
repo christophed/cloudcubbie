@@ -1,0 +1,74 @@
+extends layout
+
+block content
+  div#lockerAppContainer
+    
+    select#site-picker
+      option Choose a site
+      - if ('undefined' !== typeof(sites))
+      - sites.forEach(function(site) {
+        option(name='site',id=site.id) #{site.name}
+      - })
+
+    select#location-picker
+      option Then a location
+
+    form(id='layout-form')
+      input(type='radio',name='layout',value='grid',onchange="selectedLayout()") Grid
+      input(type='radio',name='layout',value='row',onchange="selectedLayout()") Row
+    div#locker-view
+      button(id='changeCollection') Change
+      div#lockers
+    
+
+  script(type='text/template',id='location-template')
+    <option id=<%= id %> ><%= name %></option>
+
+  script(type='text/template',id='locker-addition-template').
+    <form id='locker-addition-form' onsubmit='return false;'>
+      <input type='text' name='numLockers' placeholder='How many?'></input>
+      <button onclick='addLockersPressed()'>Add Lockers</button>
+    </form>
+
+  script(type='text/template', id='locker-view-template-backbone').
+    <div>name='<%= name%>'</div>
+
+  script(type='text/template', id='locker-view-template').
+    <div id='<%= id %>' class='locker <% if (available) { %><%= "available" %><%  } else { %><%= "unavailable" %><% } %>'>
+      
+      <div class='locker-display'>
+        <% if (name) {%> <%= name %> <% } else {%> [no name] <% } %>
+        <button class='edit-button'>Edit</button>
+      </div>
+
+      <div class='locker-edit'>
+        <div class='edit-locker-form'>
+          <input type='text' name='name' value='<%= name %>' />
+          <select name='combos'>
+            
+            <% for (var i = 0; i < combos.length; i++) { %>
+              <option value='<%= combos[i] %>'></option>
+            <% } %>
+            <option>New Combo</option>
+          </select>
+          <input type='text' name='newCombo' placeholder='01-23-45'/>
+          <button class='save-button'>Save</button>
+          <button class='cancel-button'>Cancel</button>
+
+        </div>
+
+        <div class='destroy'>X</div>
+
+        <div class='rental-form'>
+          <% if (available) { %><%= "available" %><%  } else { %><%= "unavailable" %><% } %>
+        </div>
+
+        
+      </div>
+
+      
+    </div>
+
+  // script(type='text/javascript',src='/js/pages/locker.js')
+  script(type='text/javascript',src='/js/pages/locker-backbone.js')
+  // script(type='text/javascript',src='/js/pages/locker-app-backbone.js')

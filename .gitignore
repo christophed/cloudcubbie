@@ -1,0 +1,21 @@
+lib-cov
+*.seed
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+
+pids
+logs
+results
+
+npm-debug.log
+node_modules
+
+# Some libraries and files we don't want to track
+site/bootstrap
+site/css
+site/img
+site/js/lib

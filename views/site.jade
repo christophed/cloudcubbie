@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  #siteAppContainer
+    select#site-picker
+      option Choose a site
+        - if ('undefined' !== typeof(sites))
+          - sites.forEach(function(site) {
+            option(id=site.id) #{site.name}
+          - })
+    #locationView
+
+
+  #createLocationForm
+    form#addLocationForm
+      h3 New Location
+      label(name='locationName') Name 
+      input(type='textfield',name='locationName') Create
+      button(type='button',onclick='addLocationPressed()') Submit
+  
+  script(type='text/template',id='location-template')
+    <div class='location' id=<%= id %>><div><%= name %></div></div>
+  script(type='text/javascript',src='/js/pages/site.js')

@@ -1,0 +1,13 @@
+{
+    "name": "CloudCubbie.com",
+    "version": "0.0.1",
+    "description": "CloudCubbie.com local development",
+    "dependencies": {
+        "express": "~3.1.0",
+        "path": "~0.4.9",
+        "mongoose": "~3.5.5",
+        "jade":"0.28.2",
+        "password-hash":"1.2.1"
+    }
+}
+

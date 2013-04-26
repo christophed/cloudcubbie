@@ -1,0 +1,109 @@
+<html>
+<body>
+
+    <div id='container'>
+        <div id='sidebar'>
+            <div id='sidebar'>
+                <ul>
+                    <li><a href="/locker">Locker</a></li>
+                    <li><a href="/user">User</a></li>
+                    <li><a href="/site">Site</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div id='siteAppContainer'>  <!-- Action for picking -->
+            <div>
+                <!-- Enumerate all the sites -->
+                <select id='site-picker'>
+                    <option>Choose a site</option>
+                    <% for(var i=0; i<sites.length; i++) {%>
+                        <option name='site' id='<%= sites[i].id %>'><%= sites[i].name %></option>
+                    <% } %>
+                </select>
+
+            </div>
+
+            <div id='locationView'>
+
+            </div>
+
+        </div>  
+
+        <!-- Create a new location -->
+        <div id='createLocationForm'>
+            <form action="demo_form.asp">
+                <label for="name">Location name</label>
+                <input type="text" name="name"><br>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+
+    </div> <!-- container -->
+
+    <!-- Template for location objects -->
+    <script type="text/template" id="location-template">
+        <div>{{ name }}</div>
+    </script>
+    
+    <!-- Scripts -->
+        <script src="js/lib/jquery.min.js" type="text/javascript"></script>
+        
+        <script type="text/javascript" src="js/lib/handlebars-1.0.rc.1.min.js"></script>
+        
+        <script type="text/javascript" src="js/lib/ember-latest.js"></script>
+
+    <!-- Page-specific javascript -->
+    <script type="text/javascript">
+
+        function selectedSite(siteId) {
+            $.get('/api/location/' + encodeURI(siteId),function(data, textStatus, jqXHR) {
+                // console.log(data);
+                $('#locationView').html('');
+                _.each(data, function(item) {
+                    $('#locationView').append(_.template($('#location-template').html(), {name: item.name}));
+                });
+                if (! data.length) {
+                    $('#locationView').append('<div>No Locations for this site exist.</div>');    
+                }
+                // Option to add item
+                $('#locationView').append($('<div><button onclick="createLocationClicked()">Create new Location</button></div>'));
+            });
+
+        }
+
+        function getSelectedSite() {
+            return $('#site-picker option:selected').attr('id');
+        }
+
+        function createLocationClicked() {
+
+            $('#createLocationForm').show(); // do this in a better way
+
+            // data
+
+            // $.post('/api/location/', function(data, textStatus, jqXHR) {
+            //     // if (textStatus)
+            // });
+        }
+
+        $(function() {
+            _.templateSettings = {
+              interpolate : /\{\{(.+?)\}\}/g
+            };
+
+            $('#createLocationForm').hide();
+
+            $('#site-picker').change(function() {
+                var siteId = getSelectedSite();
+                console.log(siteId);
+                if (siteId !== 'undefined') {
+                    
+                    selectedSite(siteId);    
+                }
+            })
+        });
+     
+    </script>
+</body>
+</html>

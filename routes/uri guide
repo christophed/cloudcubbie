@@ -1,0 +1,15 @@
+Facilities
+    Site:
+        /site/:id
+    Location:
+        /location/:id
+
+
+Collection of lockers
+
+    /locker/location/:id/
+
+One locker
+
+    /locker/:id
+
