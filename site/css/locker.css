@@ -1,0 +1,36 @@
+* {
+    font-family:helvetica;
+    color:#353535;
+}
+
+#container {
+    margin-left:10px;
+}
+
+#sidebar {
+    display: block;
+    width: 10%;
+    float:left;
+    
+}
+
+#sidebar ul {
+    list-style-type: none;
+}
+
+#content {
+    width: 80%;
+    display:inline-block;
+}
+
+.locker {
+    width:200px;
+    padding: 10px;
+    border-style:solid;
+    border-width:.5px;
+    float:left;
+}
+
+
+
+/* Radio button */

@@ -5,14 +5,6 @@ var model = require('../../models/lockerModel');
 
 module.exports = function(app) {
 
-    app.get('/api/test', function(req, res){
-        return res.send([{name: 'locker1'}, {name: 'locker2'}]);
-    });
-
-    app.get('/api/test2', function(req, res){
-        return res.send([{name: 'test2 locker 1'}, {name: 'test2 locker2'}]);
-    });
-
     // Get all lockers for a location
     app.get('/api/locker', function(request,response) {
         var locationId = request.query.location;
@@ -29,9 +21,26 @@ module.exports = function(app) {
         }
         else {
             return response.send(400, 'Must specify locker location.');
-        }
+        }        
+    });
 
-        
+    // new api
+    app.get('/api/locker/location/:locationId', function(request,response) {
+        var locationId = request.params.locationId;
+
+        if (typeof locationId !== 'undefined') {
+            return model.Locker.find({location:locationId}, function( err, lockers) {
+                if (! err) {
+                    return response.send( lockers );
+                }
+                else {
+                    return console.log( err );
+                }
+            });    
+        }
+        else {
+            return response.send(400, 'Must specify locker location.');
+        } 
     });
 
     // READ
@@ -76,34 +85,49 @@ module.exports = function(app) {
 
             // TODO find highest "name" and increment from there
 
-            // Plug in a bunch of lockers
-            for (var i = 0; i < numLockers; i++) {
-                var locker = new model.Locker({
-                    
-                    location: locationId,
-                    site: siteId,
+            return model.Locker.count({location: locationId}, function(err, count) {
 
-                    // name: request.body.name,
-                    combos: [],
+                if (err) {
+                    return response.send(400, err);
+                }
 
-                    available: true,
-                });
+                var maxNumberAssigned = count;
+
+                var added = [];
+                // Plug in a bunch of lockers
+                for (var i = 0; i < numLockers; i++) {
+                    var locker = new model.Locker({
+                        
+                        name: ("" + ++maxNumberAssigned),
+
+                        location: locationId,
+                        site: siteId,
+
+                        // name: request.body.name,
+                        combos: [],
+
+                        available: true,
+                    });
 
 
-                locker.save( function( err ) {
-                    if( !err ) {
-                        console.log( 'created locker' );
-                        numCreated++;
-                    }
-                    else {
-                        numFailed++;
-                    }
+                    locker.save( function( err ) {
+                        if( !err ) {
+                            console.log( 'created locker' );
+                            numCreated++;
+                        }
+                        else {
+                            numFailed++;
+                        }
 
-                    if (numCreated + numFailed ==  numLockers) {
-                        return response.send({created: numCreated, failed: numFailed});
-                    }
-                });
-            }
+                        added.push(locker);
+
+                        if (numCreated + numFailed ==  numLockers) {
+                            return response.send(added);
+                        }
+                    });
+                }
+            });
+
         });
 
             
@@ -147,6 +171,8 @@ module.exports = function(app) {
             }
 
             locker.name = request.body.name;
+            locker.combos = request.body.combos;
+            locker.notes = request.body.notes;
 
             return locker.save( function( err ) {
                 if( !err ) {
@@ -164,14 +190,25 @@ module.exports = function(app) {
     app.delete( '/api/locker/:id', function( request, response ) {
         console.log( 'Deleting locker with id: ' + request.params.id );
         return model.Locker.findById( request.params.id, function( err, locker ) {
-            return locker.remove( function( err ) {
+            if (err) {
+                console.log(err);
+                return response.send(400, err);
+            }
+            else if (locker === null) {
+                return response.send(400, 'Locker not found');   
+            }
+            else {
+                return locker.remove( function( err ) {
                 if( !err ) {
-                    console.log( 'locker removed' );
-                    return response.send( '' );
-                } else {
-                    console.log( err );
-                }
-            });
+                        return response.send( '' );
+                    } else {
+                        console.log( err );
+                        return response.send(400, err);
+                    }
+                });
+            }
+
+            
         });
     });
 }

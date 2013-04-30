@@ -16,6 +16,6 @@ node_modules
 
 # Some libraries and files we don't want to track
 site/bootstrap
-site/css
+site/css/lib
 site/img
 site/js/lib
