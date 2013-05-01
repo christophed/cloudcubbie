@@ -56,8 +56,6 @@ h1 {background-color:white;}
 
     width:175px;
     padding: 10px;
-    /*border-style:solid;
-    border-width:1px;*/
     float:left;
 
     margin:5px;
@@ -68,10 +66,23 @@ h1 {background-color:white;}
 
 }
 
+button {
+    background-color:#dddddd;
+
+    -moz-border-radius: 3px;
+    border-radius: 3px;    
+}
+
+.destroy {
+    background-color:red;
+    color:white;
+}
+
 .locker div {
     float:right;
 }
 
+/*
 .edit-locker-form * {
     float:right;
 }
@@ -82,7 +93,7 @@ h1 {background-color:white;}
 
 .edit-locker-form button {
     float:left;
-}
+}*/
 
 .available {
     background-color: #99ff99;
@@ -96,5 +107,10 @@ h1 {background-color:white;}
     background-repeat:no-repeat;
 }
 
+.edit-form {
+    background-position:right top;
+
+    width:380px;
+}
 
 /* Radio button */

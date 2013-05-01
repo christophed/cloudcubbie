@@ -70,6 +70,7 @@ app.LockerView = Backbone.View.extend({
 
     editPressed: function() {
         this.$el.html(_.template(this.editTemplate, this.model.toJSON() ));
+        this.$el.addClass('edit-form');
         return this;
     },
 
@@ -97,29 +98,33 @@ app.LockerView = Backbone.View.extend({
         // Rotate order of combos
         else {
             var rank = comboObject.attr('rank');
-            combos.concat(this.model.get('combos').slice(rank, this.model.get('combos').length));
-            combos.concat(this.model.get('combos').slice(0, rank+1));
+            var modelCombos = this.model.get('combos');
+            
+            combos = modelCombos.slice(rank, modelCombos.length);
+            combos = combos.concat(modelCombos.slice(0, rank));
         
             attrs['combos'] = combos;
         }
 
-        var notes = this.$el.find('input[name="notes"]').val();
+        var notes = this.$el.find('textarea[name="notes"]').val();
 
         attrs['notes'] = notes;
         
         var self = this;
         this.model.save(attrs, {
             error: function() {
-
+                // TODO SHOW ERRORS
             },
             success: function() {
                 self.render();
+                self.$el.removeClass('edit-form');
             }
 
         });
     },
 
     cancelEditPressed: function() {
+        this.$el.removeClass('edit-form');
         this.render();
         return this;
     },

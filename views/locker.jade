@@ -31,37 +31,47 @@ block content
       <div class='edit-locker-form'>
         <table>
           <tr>
-          <label>Name</label>
-          <input type='text' name='name' value='<%= name %>' size="10" />
+            <td>
+            <label>Name:</label>
+            </td><td>
+            <input type='text' name='name' value='<%= name %>' size="10" />
+            </td>
           </tr>
           <tr>
-          <label>Combo</label>
-          
-          <select name='combos'>
-            <% for (var i = 0; i < combos.length; i++) { %>
-              <option rank='<%= i %>' value='<%= combos[i] %>'><%= combos[i] %></option>
-            <% } %>
-            <option>New combo</option
-          </select>
-          </tr>
-
-          <tr>
-
-          <input size="10" <% if (combos.length) { %> hidden <% } %> type='text' name='newCombo' placeholder='01-23-45'/>
+            <td>
+            <label>Combo:</label>
+            </td>
+            <td>
+            <select name='combos'>
+              <% for (var i = 0; i < combos.length; i++) { %>
+                <option rank='<%= i %>' value='<%= combos[i] %>'><%= combos[i] %></option>
+              <% } %>
+              <option>New combo</option
+            </select>
+            </td>
           </tr>
           <tr>
-          <% if (typeof notes !== 'undefined') { %>
-            <input name='notes' value=<%= notes %> />
-          <% } %>
+            <td></td>
+            <td>
+            <input size="15" <% if (combos.length) { %> hidden <% } %> type='text' name='newCombo' placeholder='01-23-45'/>
+            </td>
           </tr>
           <tr>
-          <button class='save'>Save</button>
-          <button class='cancel'>Cancel</button>
-          <button class='destroy'>Delete</button>
+            <td>
+            <label>Notes:</label>
+            </td><td>
+              <textarea cols='45' name='notes'><% if (typeof notes !== 'undefined') { %><%= notes %><% } %></textarea>
+            </td>
+          </tr>
+          <tr>
+            <td>
+            </td><td>
+            <button class='save'>Save</button>
+            <button class='cancel'>Cancel</button>
+            <button class='destroy'>Delete</button>
+            </td>
           </tr>
         </table>
-        <span><% if (available) { %><%= "available" %><%  } else { %><%= "unavailable" %><% } %>
-        </span>
       </div>
 
     </div>
