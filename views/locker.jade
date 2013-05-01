@@ -14,9 +14,6 @@ block content
     select#location-picker
       option Then a location
 
-    form(id='layout-form')
-      input(type='radio',name='layout',value='grid') Grid
-      input(type='radio',name='layout',value='row') Row
     div#locker-view
       div#lockers
     
@@ -32,50 +29,66 @@ block content
   script(type='text/template', id='locker-edit-view-template').
     <div class='locker-edit'>
       <div class='edit-locker-form'>
-        <input type='text' name='name' value='<%= name %>' />
-        <select name='combos'>
+        <table>
+          <tr>
+          <label>Name</label>
+          <input type='text' name='name' value='<%= name %>' size="10" />
+          </tr>
+          <tr>
+          <label>Combo</label>
           
-          <% for (var i = 0; i < combos.length; i++) { %>
-            <option rank='<%= i %>' value='<%= combos[i] %>'><%= combos[i] %></option>
+          <select name='combos'>
+            <% for (var i = 0; i < combos.length; i++) { %>
+              <option rank='<%= i %>' value='<%= combos[i] %>'><%= combos[i] %></option>
+            <% } %>
+            <option>New combo</option
+          </select>
+          </tr>
+
+          <tr>
+
+          <input size="10" <% if (combos.length) { %> hidden <% } %> type='text' name='newCombo' placeholder='01-23-45'/>
+          </tr>
+          <tr>
+          <% if (typeof notes !== 'undefined') { %>
+            <input name='notes' value=<%= notes %> />
           <% } %>
-          <option>New combo</option
-
-        </select>
-        <input <% if (combos.length) { %> hidden <% } %> type='text' name='newCombo' placeholder='01-23-45'/>
-
-        <% if (typeof notes !== 'undefined') { %>
-          <input name='notes' value=<%= notes %> />
-        <% } %>
-
-        <button class='save'>Save</button>
-        <button class='cancel'>Cancel</button>
-        <button class='destroy'>Delete</button>
-      </div>
-
-      
-
-      <div class='rental-form'>
-        <% if (available) { %><%= "available" %><%  } else { %><%= "unavailable" %><% } %>
+          </tr>
+          <tr>
+          <button class='save'>Save</button>
+          <button class='cancel'>Cancel</button>
+          <button class='destroy'>Delete</button>
+          </tr>
+        </table>
+        <span><% if (available) { %><%= "available" %><%  } else { %><%= "unavailable" %><% } %>
+        </span>
       </div>
 
     </div>
 
   script(type='text/template', id='locker-view-template').
-    
       <div class='locker-display'>
         <% if (name) { %><%= name %><% } else { %> [no name] <% } %>
         <button class='edit'>Edit</button>
-        <button class='rent'>Rent</button>
+        <button class='rent'><% if (available) { %><%= "Rent" %><%  } else { %><%= "<del>Rent</del>" %><% } %></button>
       </div>
 
     </div>
 
   script(type='text/template', id='locker-list-view-setup-template').
-    <button class="show-add-lockers">Add Lockers</button>
-    <div class="add-lockers-form">
+    <span id='layout-form'>
+      <input type='radio' name='layout' value='grid' checked />
+      <input type='radio' name='layout' value='row'/>
+    </span>
+    <button class="show-add-lockers">Add more lockers</button>
+    <span class="add-lockers-form">
       <input type="number" placeholder="10" class="add-lockers-input" value="1"/>
       <button class="add-lockers-button">Add</button><button class="add-lockers-cancel-button">Cancel</button>
-    </div>
+    </span>
     <div id="lockers"></div>
 
   script(type='text/javascript',src='/js/pages/locker-backbone.js')
+
+
+
+

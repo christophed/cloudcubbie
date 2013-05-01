@@ -126,10 +126,36 @@ app.LockerView = Backbone.View.extend({
 
     rentPressed: function() {
         // TODO
+        var self = this;
+        var attrs = {};
+
+        attrs['available'] = !this.model.get('available');
+
+        this.model.save(attrs, {
+            patch: true,
+            error: function() {
+
+            },
+            success: function() {
+                self.render();
+            }
+        });
+
     },
 
     render: function() { 
         var tmpl = _.template(this.template);
+
+        if (this.model.get('available') == true) {
+            this.$el.addClass('available');
+            this.$el.removeClass('unavailable');
+        }
+        else {
+            this.$el.removeClass('available');
+            this.$el.addClass('unavailable');   
+        }
+        
+
         this.$el.html(tmpl( this.model.toJSON() ));
         return this;
     }
@@ -148,21 +174,13 @@ app.LockerListView = Backbone.View.extend({
     initialize: function() {
         this.collection = new app.LockerList();
         
-        this.collection.comparator = function(locker) {
-            if (_.isNumber(locker.name)){
-                return parseInt(locker.name);
-            }
-            return locker.name;
-            
-        };
-        // this.collection.fetch({reset:true});
-
+        this.collection.comparator = 'name';
+        
         this.listenTo( this.collection, 'add', this.renderLocker );
         this.listenTo( this.collection, 'reset', this.render );
 
         this.collection.rootUrl = '/api/locker/location/';
-        // this.collectionUr('collectionUrls', ['/api/test1','/api/test2']);
-        // this.collection.model.set('currentCollection',1);
+        
     },
 
     events: {

@@ -122,6 +122,7 @@ module.exports = function(app) {
                         added.push(locker);
 
                         if (numCreated + numFailed ==  numLockers) {
+
                             return response.send(added);
                         }
                     });
@@ -185,6 +186,34 @@ module.exports = function(app) {
             });
         });
     });
+
+    // UPDATE PARTIAL -- only supports available now
+
+    app.patch( '/api/locker/:id', function( request, response ) {
+        console.log( 'Updating locker ' + request.body.name );
+        
+        return model.Locker.findById( request.params.id, function( err, locker ) {
+            if (err) {
+                console.log( err );
+                return response.send(400, err);
+            }
+
+
+            locker.available = request.body.available;
+
+            return locker.save( function( err ) {
+                if( !err ) {
+                    console.log( 'locker updated' );
+                    return response.send( locker );
+                } else {
+                    console.log( err );
+                    return response.send(400, err);
+                }
+                
+            });
+        });
+    });
+
 
     // DELETE
     app.delete( '/api/locker/:id', function( request, response ) {
