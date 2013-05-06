@@ -38,7 +38,28 @@ app.LockerView = Backbone.View.extend({
     },
 
     destroyPressed: function() {
+
+        // modal view
         var self = this;
+
+        $('#message-dialog').text('Are you sure you want to delete this locker?');
+
+        $('#message-dialog').dialog({
+            title: "Confirm",
+            draggable:false,
+            modal: true,
+            buttons: [ 
+                { text: "Delete", click: function() { $( this ).dialog( "close" ); self.destroy(); } },
+                { text: "Cancel", click: function() { $( this ).dialog( "close" ); } }
+            ]
+        });
+
+    },
+
+
+    destroy: function() {
+        var self = this;
+
         this.model.destroy({
 
             success: function() {
@@ -52,6 +73,7 @@ app.LockerView = Backbone.View.extend({
 
         });
     },
+
 
     addComboPressed: function() {
         this.$el.find('[name="newCombo"]').show();
@@ -135,13 +157,16 @@ app.LockerView = Backbone.View.extend({
         var attrs = {};
 
         attrs['available'] = !this.model.get('available');
+        // TODO is this available?
 
         this.model.save(attrs, {
             patch: true,
             error: function() {
-
+                // TODO
             },
             success: function() {
+                // Callback for fillout out renting info
+
                 self.render();
             }
         });
@@ -303,6 +328,9 @@ app.BodyView = Backbone.View.extend({
         }
 
         this.$el.find('#location-picker').show();
+
+        $('#ajax-dialog').text('Fetching locations');
+
         $.get('/api/location', {site: siteId}, function(data, textStatus, jqXHR) {
 
             _.each(data, function(item) {
@@ -321,6 +349,9 @@ app.BodyView = Backbone.View.extend({
         if (!locationId) {
             return;
         }
+
+        $('#ajax-dialog').text('Fetching lockers');
+
         this.lockerListView.collection.url = this.lockerListView.collection.rootUrl + locationId;
         this.lockerListView.collection.fetch({reset:true});
     },
@@ -334,4 +365,15 @@ app.BodyView = Backbone.View.extend({
 
 $(function() {
     new app.BodyView();
+
+    $(document).ajaxStart(function () {
+        $('#ajax-dialog').dialog({
+            dialogClass: "no-close",
+            title: "Loading",
+            modal: true,
+            
+        });
+    }).ajaxStop(function () {
+        $('#ajax-dialog').dialog('close');
+    });
 });

@@ -4,7 +4,8 @@
 }
 
 body {
-    background-color:#5CADFF;
+    /*background-color:#5CADFF;*/
+    background-color: #ccc;
 }
 
 h1 {background-color:white;}
@@ -17,14 +18,13 @@ h1 {background-color:white;}
     background-color:white;
 
     /* Corners */
-    -moz-border-radius: 15px;
-    border-radius: 15px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
 
     /* Shadow */
-    -moz-box-shadow: 4px 4px 2px 2px #555555;
-    -webkit-box-shadow: 4px 4px 2px 2px #555555;
-    box-shadow: 4px 4px 2px 2px #555555;
-
+    -moz-box-shadow: 2px 2px 1px 1px #555555;
+    -webkit-box-shadow: 2px 2px 1px 1px #555555;
+    box-shadow: 2px 2px 1px 1px #555555;
 
 }
 
@@ -49,22 +49,39 @@ h1 {background-color:white;}
     min-width:600px; width: auto !important;
     width: 800px;
     padding:10px;
+    padding-top:0px;
     padding-bottom:20px;
 }
 
 .locker {
 
     width:175px;
+    height:30px;
+
     padding: 10px;
     float:left;
 
     margin:5px;
 
     /* Corners */
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+
+    /* Shadow */
+    -moz-box-shadow: 1px 1px 1px 1px #555555;
+    -webkit-box-shadow: 1px 1px 1px 1px #555555;
+    box-shadow: 1px 1px 1px 1px #555555;
 
 }
+
+/*.locker:hover {
+    border-style:solid;
+    border-width:2px;
+    
+    width:171px;
+    height:26px;
+
+}*/
 
 button {
     background-color:#dddddd;
@@ -80,20 +97,13 @@ button {
 
 .locker div {
     float:right;
+
+
 }
 
-/*
-.edit-locker-form * {
-    float:right;
+button:hover {
+    background-color:#ccc;
 }
-
-.edit-locker-form label {
-    float:left;
-}
-
-.edit-locker-form button {
-    float:left;
-}*/
 
 .available {
     background-color: #99ff99;
@@ -107,10 +117,21 @@ button {
     background-repeat:no-repeat;
 }
 
-.edit-form {
+.edit-form, .edit-form:hover {
     background-position:right top;
 
     width:380px;
+    height:auto;
+}
+
+.callout {
+    z-index:10;,
+    display:none;
+}
+
+.callout:hover {
+    display: inline;
+    position: absolute;
 }
 
 /* Radio button */

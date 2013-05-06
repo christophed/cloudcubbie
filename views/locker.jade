@@ -1,9 +1,14 @@
 extends layout
 
 block content
+  div#ajax-dialog(hidden).
+    Syncing with the server
+  div#error-dialog(hidden).
+    Error
+  div#message-dialog(hidden).
   h3 Locker Management
   div#locker-app
-    
+
     select#site-picker
       option Choose a site
       - if ('undefined' !== typeof(sites))
@@ -77,16 +82,14 @@ block content
     </div>
 
   script(type='text/template', id='locker-view-template').
-      <div class='locker-display'>
-        <% if (name) { %><%= name %><% } else { %> [no name] <% } %>
-        <button class='edit'>Edit</button>
-        <button class='rent'><% if (available) { %><%= "Rent" %><%  } else { %><%= "<del>Rent</del>" %><% } %></button>
-      </div>
-
+    <div class='locker-display'>
+      <% if (name) { %><%= name %><% } else { %> [no name] <% } %>
+      <button class='edit'>More</button>
+      <button class='rent'><% if (available) { %><%= "Rent" %><%  } else { %><%= "<del>Rent</del>" %><% } %></button>
     </div>
 
   script(type='text/template', id='locker-list-view-setup-template').
-    <span id='layout-form'>
+    <span id='layout-form' hidden>
       <input type='radio' name='layout' value='grid' checked />
       <input type='radio' name='layout' value='row'/>
     </span>
