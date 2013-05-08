@@ -5,7 +5,28 @@ block content
     Syncing with the server
   div#error-dialog(hidden).
     Error
-  div#message-dialog(hidden).
+  div#message-dialog(hidden)
+  div#rental-dialog(hidden)
+    form
+      label(name="firstName")
+      label(name="lastName")
+      label(name="id")
+      label(name="email")
+      label(name="startDate")
+      label(name="endDate")
+
+      input(name="firstName",placeholder="First name")
+      input(name="lastName",placeholder="Last name")
+      input(name="id",placeholder="ID")
+      input(name="email",placeholder="Email")
+      input(name="startDate",placeholder="Start date")
+      input(name="endDate",placeholder="End date")
+      br
+      button(class='submit-button') Submit
+      button(class='edit-button') Edit
+      button(class='cancel-button') Cancel
+      button(class='remove-button') Remove
+
   h3 Locker Management
   div#locker-app
 

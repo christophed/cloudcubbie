@@ -187,7 +187,7 @@ module.exports = function(app) {
         });
     });
 
-    // UPDATE PARTIAL -- only supports available now
+    // UPDATE PARTIAL -- only supports 'available' now
 
     app.patch( '/api/locker/:id', function( request, response ) {
         console.log( 'Updating locker ' + request.body.name );

@@ -74,7 +74,6 @@ app.LockerView = Backbone.View.extend({
         });
     },
 
-
     addComboPressed: function() {
         this.$el.find('[name="newCombo"]').show();
     },
@@ -151,14 +150,21 @@ app.LockerView = Backbone.View.extend({
         return this;
     },
 
+//  RENTAL CONTROL
+
     rentPressed: function() {
         // TODO
-        var self = this;
         var attrs = {};
+        var available = this.model.get('available');
 
         attrs['available'] = !this.model.get('available');
-        // TODO is this available?
 
+        // Already rented
+        if (!available) {
+            return this.displayRentalForm(false);
+        }
+
+        var self = this;
         this.model.save(attrs, {
             patch: true,
             error: function() {
@@ -166,12 +172,84 @@ app.LockerView = Backbone.View.extend({
             },
             success: function() {
                 // Callback for fillout out renting info
-
-                self.render();
+                self.displayRentalForm(true);
             }
         });
+    },
+
+    removeRentalPressed: function() {
 
     },
+
+    setRentControl: function(newRental) {
+        var self = this;
+
+        var removeButtonClass = ".remove-button";
+        if (newRental) {
+            removeButtonClass = ".cancel-button";
+        }
+
+        // Remove
+        $('#rental-dialog ' + removeButtonClass).click(function() {
+            var attrs = {available:true};
+            // Remove
+            self.model.save(attrs, {
+                patch: true,
+                error: function() {
+                    // TODO
+                },
+                success: function() {
+                    // Callback for fillout out renting info
+                    self.render();
+                    $('#rental-dialog').dialog('close');
+                }
+            });
+            return false;
+        });
+
+        // Edit button
+        $('#rental-dialog .edit-button').click(function() {
+
+        });
+    },
+
+    displayRentalForm: function(newRental) {
+
+        if (newRental) {
+            $('#rental-dialog label').hide();
+            $('#rental-dialog input').show();
+
+            $('#rental-dialog .edit-button').hide();
+            $('#rental-dialog .remove-button').hide();
+
+            $('#rental-dialog .submit-button').show();
+        }
+        else {
+            $('#rental-dialog label').show();
+            $('#rental-dialog input').hide();
+
+            $('#rental-dialog .edit-button').show();
+            $('#rental-dialog .remove-button').show();   
+
+            $('#rental-dialog .submit-button').hide();
+        }
+
+        this.setRentControl(newRental);
+
+        $('#rental-dialog').dialog({
+            title: "Rental information",
+            modal: true,
+        });
+
+        this.render();
+    },
+
+    createRental: function() {
+
+    },
+
+
+// DISPLAY
 
     render: function() { 
         var tmpl = _.template(this.template);
@@ -363,9 +441,9 @@ app.BodyView = Backbone.View.extend({
 
 });
 
-$(function() {
-    new app.BodyView();
-
+initialize = function() {
+    
+    // AJAX
     $(document).ajaxStart(function () {
         $('#ajax-dialog').dialog({
             dialogClass: "no-close",
@@ -376,4 +454,31 @@ $(function() {
     }).ajaxStop(function () {
         $('#ajax-dialog').dialog('close');
     });
+
+    // Setup rental dialog
+
+    $('#rental-dialog [name="startDate"]').datepicker({});
+    $('#rental-dialog [name="endDate"]').datepicker({});
+
+    $('#rental-dialog .submit-button').click(function() {
+        $('#rental-dialog').dialog('close');
+        return false;
+    });
+       
+    $('#rental-dialog .cancel-button').click(function() {
+        $('#rental-dialog').dialog('close');
+        return false;
+    });
+}
+
+$(function() {
+    new app.BodyView();
+
+    initialize();
+
 });
+
+
+
+
+

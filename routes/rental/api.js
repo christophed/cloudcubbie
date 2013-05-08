@@ -17,6 +17,17 @@ module.exports = function(app) {
         });
     });
 
+    // Return rental corresponding to locker
+    app.get('/api/locker/rental/locker/:id', function( request, response ) {
+        return model.Location.findById( request.params.id, function( err, location ) {
+            if( !err ) {
+                return response.send( location );
+            } else {
+                return console.log( err );
+            }
+        });
+    });
+
     //Get a single location by id
     app.get( '/api/locker/rental/:id', function( request, response ) {
         return model.Location.findById( request.params.id, function( err, location ) {
