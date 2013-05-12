@@ -6,7 +6,7 @@ var model = require('../../models/lockerModel');
 module.exports = function(app) {
 
     // Get all locations
-    app.get('/api/locker/rental', function(request,response) {
+    app.get('/api/rental', function(request,response) {
         return model.Location.find( function( err, locations) {
             if (! err) {
                 return response.send( locations );
@@ -18,7 +18,7 @@ module.exports = function(app) {
     });
 
     // Return rental corresponding to locker
-    app.get('/api/locker/rental/locker/:id', function( request, response ) {
+    app.get('/api/rental/locker/:id', function( request, response ) {
         return model.Location.findById( request.params.id, function( err, location ) {
             if( !err ) {
                 return response.send( location );
@@ -29,54 +29,82 @@ module.exports = function(app) {
     });
 
     //Get a single location by id
-    app.get( '/api/locker/rental/:id', function( request, response ) {
-        return model.Location.findById( request.params.id, function( err, location ) {
+    app.get( '/api/rental/:id', function( request, response ) {
+        return model.Rental.findById( request.params.id, function( err, rental ) {
             if( !err ) {
-                return response.send( location );
+                return response.send( rental );
             } else {
-                return console.log( err );
+                console.log( err );
+                return response.send(400, err );
             }
         });
     });
 
     //Insert a new location
-    app.post( '/api/locker/rental', function( request, response ) {
+    app.post( '/api/rental', function( request, response ) {
+        // FInd locker
+        var lockerId = request.body.locker;
 
-        // Return error if locker is rented
-        var rental = new model.Rental({
-            locker: request.body.locker,
-            memberID: : request.body.memberID,
+        if (typeof lockerId !== 'undefined') {
+            return model.Locker.findById(lockerId, function( err, locker) {
+                if (! err) {
+                    // Return error if locker is rented
+                    var rental = new model.Rental({
+                        locker: request.body.locker,
+                        memberID: request.body.memberID,
 
-            firstName: request.body.firstName,
-            lastName: request.body.lastName,
+                        firstName: request.body.firstName,
+                        lastName: request.body.lastName,
 
-            email: request.body.email,
-            phone: request.body.phone,
+                        email: request.body.email,
+                        phone: request.body.phone,
 
-            photo: request.body.photo, // TODO file upload
-            cost: request.body.cost,
+                        photo: request.body.photo, // TODO file upload
+                        cost: request.body.cost,
 
-            startDate: request.body.startDate,
-            endDate: request.body.endDate,
+                        startDate: request.body.startDate,
+                        endDate: request.body.endDate,
 
-            notes: request.body.notes
+                        notes: request.body.notes
 
-        });
+                    });
 
-        rental.save( function( err ) {
-            if( !err ) {
-                return console.log( 'created' );
-            } else {
-                return console.log( err );
-            }
-        });
-        return response.send( rental );
+                    rental.save( function( err ) {
+                        if( !err ) {
+                            locker.rental = rental._id;
+
+                            console.log( 'Created rental' );
+                            locker.save(function(lockerErr) {
+                                if (!err) {
+                                    console.log('Locker rented')
+                                    return response.send( rental );    
+                                }
+                                else {
+                                    return response.send(400, 'Rental reference dangling');
+                                }
+                            })
+                        } else {
+                            console.log( err );
+                            return response.send(400, "Error in creating locker: " + err);
+                        }
+                    });
+                }
+                else {
+                    console.log( err );
+                    return response.send(400, err);
+                }
+            });    
+        }
+        else {
+            return response.send(400, 'Must specify locker.');
+        }  
+
     });
 
     //Update a location
-    app.put( '/api/locker/rental/:id', function( request, response ) {
+    app.put( '/api/rental/:id', function( request, response ) {
         console.log( 'Updating location ' + request.body.name );
-        return model.Location.findById( request.params.id, function( err, location ) {
+        return model.Rental.findById( request.params.id, function( err, location ) {
             if (err) {
                 return console.log( err );
             }
@@ -86,9 +114,10 @@ module.exports = function(app) {
                                 'photo', 'cost', 'startDate', 'endDate', 'notes'];
 
                 // TODO update here
-
-                for (var param in params) {
-                    if (param !== 'undefined') {
+                for (var i = 0; i < params.length; i++) {
+                    var param = params[i];
+                    if (request.body[param] !== 'undefined') {
+                        console.log(param);
                         rental[param] = request.body[param];
                     }
                 }
@@ -96,29 +125,53 @@ module.exports = function(app) {
                 return rental.save( function( err ) {
                     if( !err ) {
                         console.log( 'rental updated' );
+                        return response.send( rental );
                     } else {
                         console.log( err );
+                        return response.send( 400, err );
                     }
-                    return response.send( rental );
                 });
-            }
+            });
 
             
         });
     });
 
-    //Delete a location
-    app.delete( '/api/locker/rental/:id', function( request, response ) {
+    // delete a rental
+    app.delete( '/api/rental/:id', function( request, response ) {
         console.log( 'Deleting locker with id: ' + request.params.id );
         return model.Rental.findById( request.params.id, function( err, rental ) {
-            return rental.remove( function( err ) {
-                if( !err ) {
-                    console.log( 'rental removed' );
-                    return response.send( '' );
-                } else {
-                    console.log( err );
-                }
-            });
+            if (err) {
+                return (400, err);
+            }
+            else {
+                return model.Locker.findById( rental.locker, function(err, locker) {
+                    if (!err) {
+                        locker.rental = null;
+                        return locker.save(function( err) {
+                            if ( !err ) {
+                                return response.send(locker);
+                            }
+                            else {
+                                console.log(err);
+                                return response.send(400, err);
+                            }
+                        });
+                    }
+                    else {
+                        return (400, err);
+                    }
+                } );
+                // return rental.remove( function( err ) {
+                //     if( !err ) {
+                //         console.log( 'rental removed' );
+                //         return response.send( '' );
+                //     } else {
+                //         console.log( err );
+                //     }
+                // });    
+            }
+            
         });
     });
 }

@@ -2,6 +2,24 @@
 
 var app = app || {};
 
+// Rental
+app.Rental = Backbone.Model.extend({
+    defaults: {
+        
+    },
+
+    url: function() {
+        return this.urlRoot + "/" + this.id;
+    },
+
+    urlRoot: '/api/rental',
+
+    parse: function(response) {
+        response.id = response._id;
+        return response;
+    }
+});
+
 // LOCKER MODEL
 app.Locker = Backbone.Model.extend({
     defaults: {
@@ -32,6 +50,12 @@ app.LockerView = Backbone.View.extend({
         'click .add-combo': 'addComboPressed',
         'click .save': 'saveEditPressed',
 
+        // Rental
+        'click .cancel-button': 'cancelRentPressed',
+        'click .edit-button': 'editRentPressed',
+        'click .submit-button': 'submitRentPressed',
+        'click .remove-rental-button': 'removeRentPressed',
+
         'click .destroy': 'destroyPressed',
         'sync': 'render',
         'change select[name="combos"]': 'selectedCombo',
@@ -56,7 +80,6 @@ app.LockerView = Backbone.View.extend({
 
     },
 
-
     destroy: function() {
         var self = this;
 
@@ -70,7 +93,6 @@ app.LockerView = Backbone.View.extend({
             error: function() {
                 // TODO: INSERT ERROR
             }
-
         });
     },
 
@@ -120,17 +142,17 @@ app.LockerView = Backbone.View.extend({
         else {
             var rank = comboObject.attr('rank');
             var modelCombos = this.model.get('combos');
-            
+
             combos = modelCombos.slice(rank, modelCombos.length);
             combos = combos.concat(modelCombos.slice(0, rank));
-        
+
             attrs['combos'] = combos;
         }
 
         var notes = this.$el.find('textarea[name="notes"]').val();
 
         attrs['notes'] = notes;
-        
+
         var self = this;
         this.model.save(attrs, {
             error: function() {
@@ -151,110 +173,144 @@ app.LockerView = Backbone.View.extend({
     },
 
 //  RENTAL CONTROL
-
-    rentPressed: function() {
-        // TODO
+    submitRentPressed: function() {
         var attrs = {};
-        var available = this.model.get('available');
 
-        attrs['available'] = !this.model.get('available');
+        this.$el.find('.rent-form input').each(function() {
+            attrs[$(this).attr('name')] = $(this).val();
+        });
 
-        // Already rented
-        if (!available) {
-            return this.displayRentalForm(false);
+        var type = "PUT";
+
+        if (typeof this.model.get('rental') === 'undefined' || this.model.get('rental') == null)
+        {
+            // New rental
+            attrs['locker'] = this.model.get("_id");
+            type = "POST";
         }
 
-        var self = this;
-        this.model.save(attrs, {
-            patch: true,
-            error: function() {
-                // TODO
+        var lockerView = this;
+
+        $.ajax({
+            url: '/api/rental/' + (type === 'POST' ? "" : this.model.get('rental') ),
+            type: type,
+            data: attrs,
+            success: function(data) {
+                // need to render data
+                lockerView.model.set('rental', data._id);
+                lockerView.render();
+
+                lockerView.$el.find('input[name="startDate"]').datepicker({ dateFormat: 'D M dd yy' });
+                lockerView.$el.find('input[name="endDate"]').datepicker({ dateFormat: 'D M dd yy' });
             },
-            success: function() {
-                // Callback for fillout out renting info
-                self.displayRentalForm(true);
+            error: function(err) {
+                console.log(err);
             }
         });
+
+        return false;
     },
 
-    removeRentalPressed: function() {
-
+    editRentPressed: function() {
+        this.$el.find('.rental-label').hide();
+        this.$el.find('.rental-input').show();
+        return false;
     },
 
-    setRentControl: function(newRental) {
-        var self = this;
+    removeRentPressed: function() {
+        var rentalID = this.model.get('rental');
+        var lockerView = this;
 
-        var removeButtonClass = ".remove-button";
-        if (newRental) {
-            removeButtonClass = ".cancel-button";
-        }
+        $.ajax({
+            url: '/api/rental/' + rentalID, 
+            type:'DELETE',
+            success: function(data) {
+                lockerView.model.set('rental', null);
+                lockerView.render();
+            },
+            error: function(err) {
+                // TODO error
 
-        // Remove
-        $('#rental-dialog ' + removeButtonClass).click(function() {
-            var attrs = {available:true};
-            // Remove
-            self.model.save(attrs, {
-                patch: true,
-                error: function() {
-                    // TODO
+            }
+        });
+
+
+        return false;        
+    },
+
+    rentPressed: function() {
+        // TODO  Display rent info, get current rent info, and render
+        var rentalID = this.model.get('rental');
+
+        // Rental is out
+        if (rentalID && ! this.$el.find('.rent-form').is(':visible')) {
+            // retrieve from server
+            // var newRental = new app.Rental( {id: rentalID } );
+            // this.model.set('rentalModel', newRental);
+
+            var lockerView = this;
+            $('#ajax-dialog').text('Fetching Rental info');
+
+            $.ajax({
+                url: '/api/rental/' + rentalID, 
+                type:'GET',
+                success: function(data) {
+                    // need to render data
+                    lockerView.$el.find('.rent-form input').each(function() {
+
+                        var attrName = $(this).attr('name');
+
+                        if (data[attrName]) {
+                            // TODO canvas
+
+                            // Date special format
+                            if (attrName === "startDate" || attrName === "endDate") {
+                                var dateMs = Date.parse(data[attrName]);
+                                var date = new Date(dateMs);
+                                lockerView.$el.find('.rent-form input[name="' + attrName + '"]').val(date.toDateString());
+                                lockerView.$el.find('.rent-form label[name="' + attrName + '"]').text(date.toDateString());
+                            }
+                            else {
+                                lockerView.$el.find('.rent-form input[name="' + attrName + '"]').val(data[attrName]);
+                                lockerView.$el.find('.rent-form label[name="' + attrName + '"]').text(data[attrName]);
+                            }
+                        }
+                        
+                    });
+
+                    lockerView.toggleRent();
+                    lockerView.$el.find('.rental-input').hide();
+                    lockerView.$el.find('.rental-label').show();
                 },
-                success: function() {
-                    // Callback for fillout out renting info
-                    self.render();
-                    $('#rental-dialog').dialog('close');
+                error: function(err) {
+                    console.log(err);
                 }
             });
-            return false;
-        });
-
-        // Edit button
-        $('#rental-dialog .edit-button').click(function() {
-
-        });
-    },
-
-    displayRentalForm: function(newRental) {
-
-        if (newRental) {
-            $('#rental-dialog label').hide();
-            $('#rental-dialog input').show();
-
-            $('#rental-dialog .edit-button').hide();
-            $('#rental-dialog .remove-button').hide();
-
-            $('#rental-dialog .submit-button').show();
         }
         else {
-            $('#rental-dialog label').show();
-            $('#rental-dialog input').hide();
-
-            $('#rental-dialog .edit-button').show();
-            $('#rental-dialog .remove-button').show();   
-
-            $('#rental-dialog .submit-button').hide();
+            
+            this.toggleRent();
+            this.$el.find('.rental-label').hide();
+            this.$el.find('.rental-input').show();
         }
-
-        this.setRentControl(newRental);
-
-        $('#rental-dialog').dialog({
-            title: "Rental information",
-            modal: true,
-        });
-
-        this.render();
     },
 
-    createRental: function() {
-
+    cancelRentPressed: function() {
+        this.toggleRent();
+        return false;
     },
 
+    toggleRent: function() {
+        this.$el.find('.callout-arrow').toggle();
+        this.$el.find('.rent-form').toggle();
+    },
 
 // DISPLAY
 
     render: function() { 
         var tmpl = _.template(this.template);
 
-        if (this.model.get('available') == true) {
+        if (typeof this.model.get('rental') === 'undefined' || this.model.get('rental') == null) {
             this.$el.addClass('available');
             this.$el.removeClass('unavailable');
         }
@@ -262,9 +318,9 @@ app.LockerView = Backbone.View.extend({
             this.$el.removeClass('available');
             this.$el.addClass('unavailable');   
         }
-        
 
         this.$el.html(tmpl( this.model.toJSON() ));
+
         return this;
     }
 });
@@ -328,7 +384,6 @@ app.LockerListView = Backbone.View.extend({
                 },
                 error: function(err) {
                     self.$el.find('.add-lockers-input button').removeAttr('disabled');
-                    alert(err);
                     console.log(err);
                 }
             });
@@ -361,12 +416,22 @@ app.LockerListView = Backbone.View.extend({
         this.collection.each(function(locker) {
             this.renderLocker( locker );
         }, this );
+        this.$el.find('input[name="startDate"]').datepicker({ dateFormat: 'D M dd yy' });
+        this.$el.find('input[name="endDate"]').datepicker({ dateFormat: 'D M dd yy' });
     }
 });
 
 app.LocationsView = Backbone.View.extend({
-    el: $('#location-picker')
+    el: $('#location-picker'),
 
+    events: {
+        'fetch' : 'initializeFetch'
+    },
+
+    fetch: function() {
+        this.$el.find('input[name="startDate"]').datepicker({ dateFormat: 'D M dd yy' });
+        this.$el.find('input[name="endDate"]').datepicker({ dateFormat: 'D M dd yy' });   
+    }
 });
 
 app.BodyView = Backbone.View.extend({
@@ -457,18 +522,6 @@ initialize = function() {
 
     // Setup rental dialog
 
-    $('#rental-dialog [name="startDate"]').datepicker({});
-    $('#rental-dialog [name="endDate"]').datepicker({});
-
-    $('#rental-dialog .submit-button').click(function() {
-        $('#rental-dialog').dialog('close');
-        return false;
-    });
-       
-    $('#rental-dialog .cancel-button').click(function() {
-        $('#rental-dialog').dialog('close');
-        return false;
-    });
 }
 
 $(function() {

@@ -50,6 +50,7 @@ require('./routes/locker/client')(app);
 // Manipulate locker and location objects
 require('./routes/locker/api')(app);
 require('./routes/location/api')(app);
+require('./routes/rental/api')(app);
 
 //Start server
 var port = 3000;

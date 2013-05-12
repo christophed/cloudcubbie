@@ -95,9 +95,13 @@ button {
     color:white;
 }
 
+.destroy:hover {
+    color:red;
+    background-color:white;
+}
+
 .locker div {
     float:right;
-
 
 }
 
@@ -121,17 +125,38 @@ button:hover {
     background-position:right top;
 
     width:380px;
-    height:auto;
-}
-
-.callout {
-    z-index:10;,
-    display:none;
-}
-
-.callout:hover {
-    display: inline;
-    position: absolute;
+    height:150px;
 }
 
 /* Radio button */
+
+.callout-arrow {
+    width: 0; 
+    height: 0;
+    position:relative;
+
+    top:30px;
+    left:110px;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    
+    border-bottom: 10px solid white;
+}
+
+.rent-form {
+    position:relative;
+
+    top:40px;
+    background-color: white;
+    padding:15px;
+    width:200px;
+}
+
+.rent-form label {
+    display:inline-block;
+}
+
+
+
+
+

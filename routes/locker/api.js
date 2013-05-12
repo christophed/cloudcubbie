@@ -167,23 +167,26 @@ module.exports = function(app) {
     app.put( '/api/locker/:id', function( request, response ) {
         console.log( 'Updating locker ' + request.body.name );
         return model.Locker.findById( request.params.id, function( err, locker ) {
-            if (err) {
+            if ( !err) {
+                locker.name = request.body.name;
+                locker.combos = request.body.combos;
+                locker.notes = request.body.notes;
+
+                return locker.save( function( err ) {
+                    if( !err ) {
+                        console.log( 'locker updated' );
+                        return response.send( locker );
+                    } else {
+                        return console.log( err );
+                    }
+                    
+                });
+            }
+
+            else {
                 return console.log( err );
             }
 
-            locker.name = request.body.name;
-            locker.combos = request.body.combos;
-            locker.notes = request.body.notes;
-
-            return locker.save( function( err ) {
-                if( !err ) {
-                    console.log( 'locker updated' );
-                    return response.send( locker );
-                } else {
-                    return console.log( err );
-                }
-                
-            });
         });
     });
 

@@ -16,12 +16,14 @@ var lockerSchema = new mongoose.Schema({
     available: Boolean, // This needs to be checked potentially every day
 
     notes: String
+
+    // Should we add info for current rental?
 });
 
 var rentalSchema = new mongoose.Schema({
     locker: { type: mongoose.Schema.Types.ObjectId, ref: 'Locker'},
 
-    memberID: Number,
+    memberID: String,
 
     firstName: String,
     lastName: String,
