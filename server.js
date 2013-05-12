@@ -18,6 +18,10 @@ app.configure( function() {
     //checks request.body for HTTP method overrides
     app.use( express.methodOverride() );
 
+    // Sessions
+    app.use(express.cookieParser('41d7862a42f0e2ace915c9d56dff6abb'));
+    app.use(express.session());
+
     //perform route lookup based on url and HTTP method
     app.use( app.router );
 
