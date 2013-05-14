@@ -525,8 +525,8 @@ initialize = function() {
 }
 
 $(function() {
-    new app.BodyView();
 
+    new app.BodyView();
     initialize();
 
 });

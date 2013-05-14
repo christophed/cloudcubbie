@@ -157,6 +157,15 @@ button:hover {
 }
 
 
+/* Login */
 
+.login {
+    margin-left:38px;;
+}
 
-
+button:disabled {
+    color:gray;    
+}
+button:disabled:hover {
+    
+}

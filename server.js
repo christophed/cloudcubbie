@@ -12,6 +12,9 @@ app.configure( function() {
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
 
+    // Root of folder
+    app.set('userAuthModule', path.join(application_root, 'routes/user/user'));
+
     //parses request body and populates request.body
     app.use( express.bodyParser() );
 
@@ -26,7 +29,7 @@ app.configure( function() {
     app.use( app.router );
 
     //Where to serve static content
-    app.use( express.static( path.join( application_root, 'site') ) );
+    app.use( express.static( path.join( application_root, 'static') ) );
 
     //Show all errors in development
     app.use( express.errorHandler({ dumpExceptions: true, showStack: true }));
@@ -45,7 +48,10 @@ app.configure('dev', function() {
 mongoose.connect('mongodb://localhost/cloudcubbie_dev' );
 
 // Misc. navigation
-require('./routes/nav.js')(app);
+require('./routes/nav/client')(app);
+
+// User && login
+require('./routes/user/login')(app);
 
 // Client site and locker views
 require('./routes/site/client')(app);

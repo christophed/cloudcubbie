@@ -22,3 +22,33 @@ model.Rental.findOne({}, function(err, rental) {
         console.log(rental);    
     }
 });
+
+
+//  New user
+var passwordHash = require('password-hash');
+var model = require('./models/clientModel');
+
+var hash = function(password) {
+    return passwordHash.generate(password, {algorithm:'sha1', saltLength:16, iterations:1000});
+}
+
+var user = new model.User({
+    firstName: 'Christophe',
+    lastName: 'Chong',
+    id: '05486773', 
+    phone: '8473122849',
+    email: 'cdchong@stanford.edu',
+    notes: 'Yolo',
+   
+    username: 'test',
+    password: hash('test') // Should be hashed
+});
+
+user.save( function( err ) {
+    if( !err ) {
+        console.log( 'new user' );
+    } 
+    else {
+        console.log( err );
+    }
+});

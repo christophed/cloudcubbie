@@ -103,7 +103,7 @@ module.exports = function(app) {
 
     //Update a location
     app.put( '/api/rental/:id', function( request, response ) {
-        console.log( 'Updating location ' + request.body.name );
+        console.log( 'Updating rental ' + request.body.id );
         return model.Rental.findById( request.params.id, function( err, location ) {
             if (err) {
                 return console.log( err );
@@ -116,7 +116,7 @@ module.exports = function(app) {
                 // TODO update here
                 for (var i = 0; i < params.length; i++) {
                     var param = params[i];
-                    if (request.body[param] !== 'undefined') {
+                    if (typeof request.body[param] !== 'undefined') {
                         console.log(param);
                         rental[param] = request.body[param];
                     }
@@ -139,7 +139,7 @@ module.exports = function(app) {
 
     // delete a rental
     app.delete( '/api/rental/:id', function( request, response ) {
-        console.log( 'Deleting locker with id: ' + request.params.id );
+        console.log( 'Deleting rental with id: ' + request.params.id );
         return model.Rental.findById( request.params.id, function( err, rental ) {
             if (err) {
                 return (400, err);
@@ -171,7 +171,6 @@ module.exports = function(app) {
                 //     }
                 // });    
             }
-            
         });
     });
 }

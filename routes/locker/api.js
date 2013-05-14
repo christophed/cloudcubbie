@@ -1,6 +1,5 @@
 // /locker/location/:id/locker/:id
 
-// routes/locker/locker.js
 var model = require('../../models/lockerModel');
 
 module.exports = function(app) {

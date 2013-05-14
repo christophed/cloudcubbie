@@ -8,12 +8,16 @@ var clientSchema = new mongoose.Schema({
 });
 
 var userSchema = new mongoose.Schema({
+    client: { type: mongoose.Schema.Types.ObjectId, ref: 'Client'},
     firstName: String,
     lastName: String,
-    id: Number, // Client-facing user ID, optional
+    id: String, // Client-facing user ID, optional
     phone: String,
     email: String,
-    notes: String
+    notes: String,
+
+    username:String,
+    password: String // Should be hashed
 });
 
 module.exports = {

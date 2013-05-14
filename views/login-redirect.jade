@@ -1,0 +1,56 @@
+!!!
+html
+  head
+    script(src="js/lib/jquery.min.js")
+
+    link(rel="stylesheet",type="text/css",href="/css/locker.css")
+
+  body
+    #container
+      #banner
+        h1 
+          a(href="/") CloudCubbie
+
+      #content
+        div(class='login')
+          h3 You must log in to continue.
+          form(method='post',action="/login",id='login-form')
+            input(hidden,name='next',value='#{url}')
+            table
+              tr
+                td
+                  label Username
+                td
+                  input(type='text',name='username',class='user-input')
+              tr
+                td
+                  label Password
+                td
+                  input(type='password',name='password',class='user-input')
+              tr
+                td
+                  button Login    
+    script(type='text/javascript').
+      $(function() {
+        $('#login-form button').attr('disabled', 'disabled');
+
+        $('#login-form .user-input').keyup(function(){
+          var isEntered = true;
+          $('#login-form input[name]').each(function() {
+
+            var inputVal = $(this).val();
+            console.log(inputVal);
+              if (typeof inputVal === 'undefined' || inputVal.length == 0) {
+                isEntered = false;
+              }
+
+          });
+          if (isEntered) {
+            $('#login-form button').removeAttr('disabled');
+          }
+          else {
+            $('#login-form button').attr('disabled', 'disabled');
+          }
+        })  
+
+      });

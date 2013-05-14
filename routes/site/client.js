@@ -2,23 +2,22 @@ var model = require('../../models/facilityModel');
 
 module.exports = function(app) {
 
-    app.get('/site', function(request,response) {
+    var userAuth = require(app.get('userAuthModule'));
+
+    app.get('/site', userAuth.verifyClientAccess, function(request,response) {
 
         model.Site.find(function(err, sites) {
             if (err) {
-                return console.log(err);
+                console.log(err);
+                return response.send(400, 'Site not found');
             }
             else {
                 response.render('site.jade', {
                     sites: sites,
                     layout: false
                 });
-                // console.log('found');
             }
-        });
-        // sites = [{name: 'Stanford Campus', id:1} ];
-
-        
+        });        
     });
 
 }
