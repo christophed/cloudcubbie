@@ -20,10 +20,10 @@ read, update, create, delete
 (3) Employee -- C/R/U/D on permission based level, no user control
 
 <h5>Todo</h5>
-1) Migrate locker rental information to locker.
-2) Permissions: Client creation, master user, CRUD user info, CRUD site info
-3) Client CRUD controls
-4) API permissions
-5) CSRF protection
-6) Modularize Backbone JS scripts, run through minifier for production use
-7) Add atomicity to locker reservation
+X   1) Migrate locker rental information to locker.
+    2) Permissions: Client creation, master user, CRUD user info, CRUD site info
+    3) Client CRUD controls
+    4) API permissions
+    5) CSRF protection
+    6) Modularize Backbone JS scripts, run through minifier for production use
+    7) Add atomicity to locker reservation

@@ -26,8 +26,8 @@ var lockerSchema = new mongoose.Schema({
     photo: {type: String, default:null},
     cost: {type: Number, default:null},
 
-    startDate: { type: Date, default: Date.now },
-    endDate: { type: Date, default: Date.now },
+    startDate: { type: Date, default: null },
+    endDate: { type: Date, default: null },
 
     rentalNotes: {type: String, default:null}
 

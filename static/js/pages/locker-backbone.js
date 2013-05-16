@@ -176,35 +176,19 @@ app.LockerView = Backbone.View.extend({
     submitRentPressed: function() {
         var attrs = {};
 
-        this.$el.find('.rent-form input').each(function() {
+        this.$el.find('.rent-form .rental-input[name]').each(function() {
             attrs[$(this).attr('name')] = $(this).val();
         });
 
-        var type = "PUT";
-
-        if (typeof this.model.get('rental') === 'undefined' || this.model.get('rental') == null)
-        {
-            // New rental
-            attrs['locker'] = this.model.get("_id");
-            type = "POST";
-        }
-
         var lockerView = this;
 
-        $.ajax({
-            url: '/api/rental/' + (type === 'POST' ? "" : this.model.get('rental') ),
-            type: type,
-            data: attrs,
-            success: function(data) {
-                // need to render data
-                lockerView.model.set('rental', data._id);
-                lockerView.render();
-
-                lockerView.$el.find('input[name="startDate"]').datepicker({ dateFormat: 'D M dd yy' });
-                lockerView.$el.find('input[name="endDate"]').datepicker({ dateFormat: 'D M dd yy' });
+        this.model.save(attrs, {
+            patch: true,
+            error: function() {
+                // TODO SHOW ERRORS
             },
-            error: function(err) {
-                console.log(err);
+            success: function() {
+                lockerView.render();
             }
         });
 
@@ -218,24 +202,19 @@ app.LockerView = Backbone.View.extend({
     },
 
     removeRentPressed: function() {
-        var rentalID = this.model.get('rental');
         var lockerView = this;
-
-        $.ajax({
-            url: '/api/rental/' + rentalID, 
-            type:'DELETE',
-            success: function(data) {
-                lockerView.model.set('rental', null);
-                lockerView.render();
+        this.model.save({available: true}, {
+            patch: true,
+            error: function(error) {
+                // TODO SHOW ERRORS
+                console.log(err);
             },
-            error: function(err) {
-                // TODO error
-
+            success: function() {
+                lockerView.render();
             }
         });
 
-
-        return false;        
+        return false;
     },
 
     rentPressed: function() {
@@ -273,7 +252,7 @@ app.LockerView = Backbone.View.extend({
     render: function() { 
         var tmpl = _.template(this.template);
 
-        if (typeof this.model.get('rental') === 'undefined' || this.model.get('rental') == null) {
+        if (this.model.get('available')) {
             this.$el.addClass('available');
             this.$el.removeClass('unavailable');
         }
@@ -283,6 +262,9 @@ app.LockerView = Backbone.View.extend({
         }
 
         this.$el.html(tmpl( this.model.toJSON() ));
+
+        this.$el.find('input[name="startDate"]').datepicker({ dateFormat: 'D M dd yy' });
+        this.$el.find('input[name="endDate"]').datepicker({ dateFormat: 'D M dd yy' });
 
         return this;
     }

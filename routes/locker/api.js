@@ -103,7 +103,7 @@ module.exports = function(app) {
                         site: siteId,
 
                         combos: []
-                        
+
                     });
 
 
@@ -160,7 +160,7 @@ module.exports = function(app) {
         });
     });
 
-    // UPDATE
+    // UPDATE -- supports locker info update
     app.put( '/api/locker/:id', function( request, response ) {
         console.log( 'Updating locker ' + request.body.name );
         return model.Locker.findById( request.params.id, function( err, locker ) {
@@ -189,7 +189,6 @@ module.exports = function(app) {
 
     // UPDATE PARTIAL -- supports locker rental
     app.patch( '/api/locker/:id', function( request, response ) {
-        console.log( 'Updating locker ' + request.body.name );
         
         return model.Locker.findById( request.params.id, function( err, locker ) {
             if ( err ) {
@@ -205,10 +204,6 @@ module.exports = function(app) {
             // New rental
             else {
                 // Not atomic, but works for now
-                if (locker.available !== true) {
-                    return response.send(400, "Locker unavailable");
-                }
-
                 locker.available = false;
             }
 
@@ -219,7 +214,7 @@ module.exports = function(app) {
             for (var i = 0; i < params.length; i++) {
                 var param = params[i];
 
-                if (locker.available === false) {
+                if (locker.available === true) {
                     locker[param] = null;
                 }
                 
@@ -230,8 +225,9 @@ module.exports = function(app) {
 
             // Save
             return locker.save( function( err ) {
-                if( !err ) {
-                    console.log( 'locker updated' );
+                if ( ! err ) {
+                    console.log( 'locker updated:' );
+                    console.log(locker);
                     return response.send( locker );
                 } else {
                     console.log( err );
