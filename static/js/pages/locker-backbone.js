@@ -126,7 +126,7 @@ app.LockerView = Backbone.View.extend({
         var comboObject = this.$el.find('select[name="combos"] option:selected');
         var combos = [];
         
-        // 
+        // Selecting combos
         if (typeof comboObject.attr('rank') === 'undefined') {
             var newCombo = this.$el.find('input[name="newCombo"]').val();
             // TODO validate combo
@@ -240,58 +240,21 @@ app.LockerView = Backbone.View.extend({
 
     rentPressed: function() {
         // TODO  Display rent info, get current rent info, and render
-        var rentalID = this.model.get('rental');
 
-        // Rental is out
-        if (rentalID && ! this.$el.find('.rent-form').is(':visible')) {
+        if (! this.$el.find('.rent-form').is(':visible')) {
             // retrieve from server
-            // var newRental = new app.Rental( {id: rentalID } );
-            // this.model.set('rentalModel', newRental);
-
-            var lockerView = this;
-            $('#ajax-dialog').text('Fetching Rental info');
-
-            $.ajax({
-                url: '/api/rental/' + rentalID, 
-                type:'GET',
-                success: function(data) {
-                    // need to render data
-                    lockerView.$el.find('.rent-form input').each(function() {
-
-                        var attrName = $(this).attr('name');
-
-                        if (data[attrName]) {
-                            // TODO canvas
-
-                            // Date special format
-                            if (attrName === "startDate" || attrName === "endDate") {
-                                var dateMs = Date.parse(data[attrName]);
-                                var date = new Date(dateMs);
-                                lockerView.$el.find('.rent-form input[name="' + attrName + '"]').val(date.toDateString());
-                                lockerView.$el.find('.rent-form label[name="' + attrName + '"]').text(date.toDateString());
-                            }
-                            else {
-                                lockerView.$el.find('.rent-form input[name="' + attrName + '"]').val(data[attrName]);
-                                lockerView.$el.find('.rent-form label[name="' + attrName + '"]').text(data[attrName]);
-                            }
-                        }
-                        
-                    });
-
-                    lockerView.toggleRent();
-                    lockerView.$el.find('.rental-input').hide();
-                    lockerView.$el.find('.rental-label').show();
-                },
-                error: function(err) {
-                    console.log(err);
-                }
-            });
+            if ( this.model.get('available') ) {
+                this.$el.find('.rental-input').show();
+                this.$el.find('.rental-label').hide();
+            }
+            else {
+                this.$el.find('.rental-input').hide();
+                this.$el.find('.rental-label').show();   
+            }
+            this.toggleRent();
         }
         else {
-            
             this.toggleRent();
-            this.$el.find('.rental-label').hide();
-            this.$el.find('.rental-input').show();
         }
     },
 

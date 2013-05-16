@@ -1,25 +1,39 @@
-// Reference the client model for things such as
-// clientModel = require('./clientModel');
-
 var facilityModel = require('./facilityModel');
 
 var mongoose = require( 'mongoose' ); //MongoDB integration
 
 var lockerSchema = new mongoose.Schema({
+    
+    name:  String,
+
     location: { type: mongoose.Schema.Types.ObjectId, ref: 'Location'},
     site: { type: mongoose.Schema.Types.ObjectId, ref: 'Site'}, // For fewer lookups
-
-    name:  String,
+    
     combos: [ String ], // The first one is the active one
 
-    rental: { type: mongoose.Schema.Types.ObjectId, ref: 'Rental'},  // Will point to last rental
-    available: Boolean, // This needs to be checked potentially every day
+    notes: String,
 
-    notes: String
+    // Current rental information
+    available: {type: Boolean, default:true},
+    memberID: {type: String, default:null},
 
-    // Should we add info for current rental?
+    firstName: {type: String, default:null},
+    lastName: {type: String, default:null},
+
+    email: {type: String, default:null},
+    phone: {type: String, default:null},
+
+    photo: {type: String, default:null},
+    cost: {type: Number, default:null},
+
+    startDate: { type: Date, default: Date.now },
+    endDate: { type: Date, default: Date.now },
+
+    rentalNotes: {type: String, default:null}
+
 });
 
+// Storing records
 var rentalSchema = new mongoose.Schema({
     locker: { type: mongoose.Schema.Types.ObjectId, ref: 'Locker'},
 
@@ -38,7 +52,7 @@ var rentalSchema = new mongoose.Schema({
     startDate: { type: Date, default: Date.now }, // Assigned date
     endDate: { type: Date, default: Date.now },
 
-    notes: String
+    rentalNotes: String
 });
 
 module.exports = {

@@ -6,26 +6,6 @@ block content
   div#error-dialog(hidden).
     Error
   div#message-dialog(hidden)
-  div#rental-dialog(hidden)
-    form
-      label(name="firstName")
-      label(name="lastName")
-      label(name="id")
-      label(name="email")
-      label(name="startDate")
-      label(name="endDate")
-
-      input(name="firstName",placeholder="First name")
-      input(name="lastName",placeholder="Last name")
-      input(name="id",placeholder="ID")
-      input(name="email",placeholder="Email")
-      input(name="startDate",placeholder="Start date")
-      input(name="endDate",placeholder="End date")
-      br
-      button(class='submit-button') Submit
-      button(class='edit-button') Edit
-      button(class='cancel-button') Cancel
-      button(class='remove-button') Remove
 
   h3 Locker Management
   div#locker-app
@@ -63,22 +43,21 @@ block content
     <div hidden class='callout-arrow'></div>
     <form hidden class='rent-form'>
 
-      <label class="rental-label" name="firstName" ></label>
-      <label class="rental-label" name="lastName" ></label>
-      <label class="rental-label" name="memberID" ></label>
-      <label class="rental-label" name="email" ></label>
-      <label class="rental-label" name="startDate" ></label>
-      <label class="rental-label" name="endDate" ></label>
-      <label class="rental-label" name="notes" ></label>
-      <label class="rental-label" name="notes" placeholder="notes"></label>
+      <label class="rental-label" name="firstName" ><%= firstName %></label>
+      <label class="rental-label" name="lastName" ><%= lastName %></label>
+      <label class="rental-label" name="memberID" ><%= memberID %></label>
+      <label class="rental-label" name="email" ><%= email %></label>
+      <label class="rental-label" name="startDate" ><%= startDate %></label>
+      <label class="rental-label" name="endDate" ><%= endDate %></label>
+      <label class="rental-label" name="rentalNotes" placeholder="notes"><%= rentalNotes %></label>
 
-      <input class="rental-input" name="firstName" placeholder="First name" />
-      <input class="rental-input" name="lastName" placeholder="Last name" />
-      <input class="rental-input" name="memberID" placeholder="ID" />
-      <input class="rental-input" name="email" placeholder="Email" />
-      <input class="rental-input" name="startDate" placeholder="Start date" />
-      <input class="rental-input" name="endDate" placeholder="End date" />
-      <textarea class="rental-input" name="notes" placeholder="notes" />
+      <input class="rental-input" name="firstName" placeholder="First name" value="<%= firstName %>" />
+      <input class="rental-input" name="lastName" placeholder="Last name" value="<%= lastName %>" />
+      <input class="rental-input" name="memberID" placeholder="ID" value="<%= memberID %>" />
+      <input class="rental-input" name="email" placeholder="Email" value="<%= email %>" />
+      <input class="rental-input" name="startDate" placeholder="Start date" value="<%= startDate %>" />
+      <input class="rental-input" name="endDate" placeholder="End date" value="<%= endDate %>" />
+      <textarea class="rental-input" name="notes" placeholder="notes" value="<%= rentalNotes %>" />
 
       <br />
       <button class='edit-button rental-label'>Edit</button>

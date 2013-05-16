@@ -102,10 +102,8 @@ module.exports = function(app) {
                         location: locationId,
                         site: siteId,
 
-                        // name: request.body.name,
-                        combos: [],
-
-                        available: true,
+                        combos: []
+                        
                     });
 
 
@@ -189,20 +187,48 @@ module.exports = function(app) {
         });
     });
 
-    // UPDATE PARTIAL -- only supports 'available' now
-
+    // UPDATE PARTIAL -- supports locker rental
     app.patch( '/api/locker/:id', function( request, response ) {
         console.log( 'Updating locker ' + request.body.name );
         
         return model.Locker.findById( request.params.id, function( err, locker ) {
-            if (err) {
+            if ( err ) {
                 console.log( err );
                 return response.send(400, err);
             }
 
+            // Delete rental
+            if (request.body.available === true) {
+                locker.available = true;
+            }
 
-            locker.available = request.body.available;
+            // New rental
+            else {
+                // Not atomic, but works for now
+                if (locker.available !== true) {
+                    return response.send(400, "Locker unavailable");
+                }
 
+                locker.available = false;
+            }
+
+            var params = ['memberID', 'firstName', 'lastName', 'email', 'phone',
+                                'photo', 'cost', 'startDate', 'endDate', 'rentalNotes'];
+
+            // Set or clear rental parameters
+            for (var i = 0; i < params.length; i++) {
+                var param = params[i];
+
+                if (locker.available === false) {
+                    locker[param] = null;
+                }
+                
+                else if (typeof request.body[param] !== 'undefined') {
+                    locker[param] = request.body[param];
+                }
+            }
+
+            // Save
             return locker.save( function( err ) {
                 if( !err ) {
                     console.log( 'locker updated' );
@@ -211,7 +237,7 @@ module.exports = function(app) {
                     console.log( err );
                     return response.send(400, err);
                 }
-                
+            
             });
         });
     });

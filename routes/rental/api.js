@@ -111,7 +111,7 @@ module.exports = function(app) {
 
             return model.Rental.findById( request.params.id, function( err, rental ) {
                 var params = ['memberID', 'firstName', 'lastName', 'email', 'phone',
-                                'photo', 'cost', 'startDate', 'endDate', 'notes'];
+                                'photo', 'cost', 'startDate', 'endDate', 'rentalNotes'];
 
                 // TODO update here
                 for (var i = 0; i < params.length; i++) {
@@ -162,14 +162,6 @@ module.exports = function(app) {
                         return (400, err);
                     }
                 } );
-                // return rental.remove( function( err ) {
-                //     if( !err ) {
-                //         console.log( 'rental removed' );
-                //         return response.send( '' );
-                //     } else {
-                //         console.log( err );
-                //     }
-                // });    
             }
         });
     });

@@ -21,6 +21,9 @@ read, update, create, delete
 
 <h5>Todo</h5>
 1) Migrate locker rental information to locker.
-2) Permissions: Create client creator script, master user, user management, site management
-3) Ability to modify items from client view
-4) CSRF protection
+2) Permissions: Client creation, master user, CRUD user info, CRUD site info
+3) Client CRUD controls
+4) API permissions
+5) CSRF protection
+6) Modularize Backbone JS scripts, run through minifier for production use
+7) Add atomicity to locker reservation
