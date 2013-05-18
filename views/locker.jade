@@ -37,19 +37,19 @@ block content
       <% if (name) { %><%= name %><% } else { %> [no name] <% } %>
 
       <button class='edit'>Info</button>
-      <button class='rent'><% if (available) { %><%= "Rent" %><%  } else { %><%= "<del>Rent</del>" %><% } %></button>
+      <button class='rent'>Rent</button>
     </div>
     
     <div hidden class='callout-arrow'></div>
     <form hidden class='rent-form'>
 
-      <label class="rental-label" name="firstName" ><%= firstName %></label>
-      <label class="rental-label" name="lastName" ><%= lastName %></label>
-      <label class="rental-label" name="memberID" ><%= memberID %></label>
-      <label class="rental-label" name="email" ><%= email %></label>
-      <label class="rental-label" name="startDate" ><%= startDate %></label>
-      <label class="rental-label" name="endDate" ><%= endDate %></label>
-      <label class="rental-label" name="rentalNotes" placeholder="notes"><%= rentalNotes %></label>
+      <label class="rental-label" name="firstName" ><%- firstName %></label>
+      <label class="rental-label" name="lastName" ><%- lastName %></label>
+      <label class="rental-label" name="memberID" ><%- memberID %></label>
+      <label class="rental-label" name="email" ><%- email %></label>
+      <label class="rental-label" name="startDate" ><%= startDateFormatted %></label>
+      <label class="rental-label" name="endDate" ><%= endDateFormatted %></label>
+      <label class="rental-label" name="rentalNotes" placeholder="notes"><%- rentalNotes %></label>
 
       <input class="rental-input" name="firstName" placeholder="First name" value="<%= firstName %>" />
       <input class="rental-input" name="lastName" placeholder="Last name" value="<%= lastName %>" />
@@ -57,7 +57,7 @@ block content
       <input class="rental-input" name="email" placeholder="Email" value="<%= email %>" />
       <input class="rental-input" name="startDate" placeholder="Start date" value="<%= startDate %>" />
       <input class="rental-input" name="endDate" placeholder="End date" value="<%= endDate %>" />
-      <textarea class="rental-input" name="rentalNotes" placeholder="notes" value="<%= rentalNotes %>" />
+      <textarea class="rental-input" name="rentalNotes" placeholder="notes"><%- rentalNotes %></textarea>
 
       <br />
       <button class='edit-button rental-label'>Edit</button>
@@ -125,6 +125,11 @@ block content
       <input type="number" placeholder="10" class="add-lockers-input" value="1"/>
       <button class="add-lockers-button">Add</button><button class="add-lockers-cancel-button">Cancel</button>
     </span>
+    <select id='sort-locker'>
+      <option>Sort by</option>
+      <option value='name'>Locker number</option>
+      <option value='available'>Availability</option>
+    </select>
     <div id="lockers"></div>
 
   script(type='text/javascript',src='/js/pages/locker-backbone.js')

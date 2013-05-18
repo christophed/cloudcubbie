@@ -4,11 +4,15 @@ var mongoose = require( 'mongoose' ); //MongoDB integration
 
 var clientSchema = new mongoose.Schema({
     name: String,
-    contact: { type: mongoose.Schema.Types.ObjectId, ref: 'User'}
+    contact: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null}
 });
 
 var userSchema = new mongoose.Schema({
+    
+    // Affiliate info info
     client: { type: mongoose.Schema.Types.ObjectId, ref: 'Client'},
+    
+    // PID
     firstName: String,
     lastName: String,
     id: String, // Client-facing user ID, optional
@@ -16,8 +20,12 @@ var userSchema = new mongoose.Schema({
     email: String,
     notes: String,
 
-    username:String,
-    password: String // Should be hashed
+    // Account info
+    username: String,
+    password: String, // Hashed
+    accountType: {type: String, default: 'employee'}, // owner, master, employee
+    isActive: {type: Boolean, default: true}, // active, suspended
+    isStaff: {type: Boolean, default: false}
 });
 
 module.exports = {

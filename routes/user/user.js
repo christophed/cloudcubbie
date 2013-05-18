@@ -12,6 +12,19 @@ module.exports = {
         next();
     },
 
+    verifyStaffAccess: function(request, response, next) {
+        if (! request.session.user ) {
+            return response.render('login-redirect.jade', {
+                url: request.url
+            });
+        }
+        if ( request.session.user.isStaff !== true ) {
+            return response.send(401, "No access");    
+        }
+        
+        next();
+    },
+
     verifyApiAccess: function(request, response, next) {
         // TODO verify access
         if (! request.session.user) {

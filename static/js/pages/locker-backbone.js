@@ -248,7 +248,6 @@ app.LockerView = Backbone.View.extend({
     },
 
 // DISPLAY
-
     render: function() { 
         var tmpl = _.template(this.template);
 
@@ -260,6 +259,12 @@ app.LockerView = Backbone.View.extend({
             this.$el.removeClass('available');
             this.$el.addClass('unavailable');   
         }
+
+        var startDate = new Date(this.model.get('startDate'));
+        var endDate = new Date(this.model.get('endDate'));
+
+        this.model.set('startDateFormatted', startDate.toDateString());
+        this.model.set('endDateFormatted', endDate.toDateString());
 
         this.$el.html(tmpl( this.model.toJSON() ));
 
@@ -295,7 +300,9 @@ app.LockerListView = Backbone.View.extend({
     events: {
         'click .show-add-lockers': 'toggleAddLockersForm',
         'click .add-lockers-cancel-button': 'toggleAddLockersForm',
-        'click .add-lockers-button': 'addLockers'
+        'click .add-lockers-button': 'addLockers',
+
+        'change #sort-locker': 'sortLockers'
     },
 
     toggleAddLockersForm: function() {
@@ -330,13 +337,20 @@ app.LockerListView = Backbone.View.extend({
                 error: function(err) {
                     self.$el.find('.add-lockers-input button').removeAttr('disabled');
                     console.log(err);
+
                 }
             });
         }
         else {
-            alert("Error: Only numbers between 1 and 1000");
             this.$el.find('.add-lockers-input button').removeAttr('disabled');
+            alert("Error: Only numbers between 1 and 1000");
         }
+    },
+
+    sortLockers: function() {
+        this.collection.comparator = this.$el.find('#sort-locker :selected').val();
+        this.collection.sort();
+        this.render();
     },
 
     reset: function() {
@@ -475,8 +489,6 @@ $(function() {
     initialize();
 
 });
-
-
 
 
 

@@ -53,6 +53,12 @@ require('./routes/nav/client')(app);
 // User && login
 require('./routes/user/login')(app);
 
+// User/client views
+require('./routes/client/client')(app);
+
+// Client creation
+require('./routes/client/api')(app);
+
 // Client site and locker views
 require('./routes/site/client')(app);
 require('./routes/locker/client')(app);
