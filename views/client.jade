@@ -1,0 +1,33 @@
+extends layout
+
+block content
+
+  h3 Staff
+
+  div#client-app
+    div#client-controls
+      select#select-client
+        option Choose a client
+        - if ('undefined' !== typeof(clients)) {
+        - clients.forEach(function(client) {
+          option(name='client',id=client._id) #{client.name}
+        - }) }
+      button(id='add-client') Add Client
+      span(hidden,id='add-client-form')
+        input(name='name',placeholder='Name')
+        button(id='submit-add-client') Submit
+        button(id='cancel-add-client') Cancel
+    div#user-controls
+    div#site-controls
+    div#location-controls
+
+  script(type='text/template',id='controls-template').
+    <select class='select-entity'><option>Choose a <%= entityType %></option></select>
+    <button class='add'><%= entityType %></button>
+    <span hidden class='add-form'>
+      <input name='name' placeholder='Name'></input>
+        <button class='submit-add'>Submit</button>
+        <button class='submit-cancel'>Cancel</button>
+    </span>
+
+  script(type='text/javascript',src='/js/pages/client-app.js')
