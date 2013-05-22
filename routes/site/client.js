@@ -14,7 +14,8 @@ module.exports = function(app) {
             else {
                 response.render('site.jade', {
                     sites: sites,
-                    layout: false
+                    layout: false,
+                    isStaff: request.session.user.isStaff,
                 });
             }
         });        

@@ -13,7 +13,8 @@ module.exports = function(app) {
             else {
                 response.render('locker.jade', {
                     layout:false,
-                    sites: sites
+                    sites: sites,
+                    isStaff: request.session.user.isStaff,
                 });
                 // console.log('found');
             }

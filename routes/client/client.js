@@ -17,6 +17,7 @@ module.exports = function(app) {
             else {
                 response.render('client.jade', {
                     clients: clients,
+                    isStaff: request.session.user.isStaff,
                     layout: false
                 });
             }

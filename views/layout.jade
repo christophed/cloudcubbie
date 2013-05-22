@@ -19,8 +19,10 @@ html
       #sidebar
         ul
 
-          li
-            a(href="/client") Client
+          - if (typeof isStaff !== 'undefined' && isStaff) {
+            li
+              a(href="/client") Staff
+          - }
           li
             a(href="/site") Site  
           li
