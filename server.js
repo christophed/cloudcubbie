@@ -2,10 +2,12 @@
 var application_root = __dirname,
     express = require( 'express' ), //Web framework
     path = require( 'path' ), //Utilities for dealing with file paths
-    mongoose = require( 'mongoose' ); //MongoDB integration
+    mongoose = require( 'mongoose' ), //MongoDB integration
+    fs = require('fs');
 
 //Create server
 var app = express();
+var logFile = fs.createWriteStream('./logging/prod.log', {flags: 'a'});
 
 // Configure server
 app.configure( function() {
@@ -14,6 +16,9 @@ app.configure( function() {
 
     // Root of folder
     app.set('userAuthModule', path.join(application_root, 'routes/user/user'));
+
+    // Logging
+    app.use(express.logger({stream: logFile}));
 
     //parses request body and populates request.body
     app.use( express.bodyParser() );
@@ -60,6 +65,7 @@ require('./routes/client/client')(app);
 require('./routes/client/api')(app);
 
 // Client site and locker views
+require('./routes/site/api')(app);
 require('./routes/site/client')(app);
 require('./routes/locker/client')(app);
 

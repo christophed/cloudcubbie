@@ -3,6 +3,19 @@ var model = require('../../models/lockerModel');
 
 module.exports = function(app) {
 
+    // Get site based on client
+    app.get('/api/site/client/:id', function(request, response) {
+
+        return model.Site.find({ client: request.params.id }, function(err, sites) {
+            if (! err) {
+                return response.send(sites);
+            }
+            else {
+                return response.send(400, err);
+            }
+        });
+    });
+
     // Get all sites
     app.get('/api/site', function(request,response) {
         return model.Site.find( function( err, site) {
@@ -29,9 +42,12 @@ module.exports = function(app) {
 
     // CREATE
     app.post( '/api/site', function( request, response ) {
-        var site = new model.Site({
-            name: request.body.name,
-        });
+        var attrs = {};
+        attrs["name"] = request.body.name;
+        if (typeof request.body.client !== 'undefined') {
+            attrs["client"] = request.body.client;
+        }
+        var site = new model.Site(attrs);
         site.save( function( err ) {
             if( !err ) {
                 console.log( 'created site' );

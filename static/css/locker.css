@@ -32,6 +32,15 @@ h1 {background-color:white;}
     margin-left:38px;
 }
 
+#banner * {
+    display:inline-block;
+}
+
+#banner .control {
+    float:right;
+    padding-right:40px;
+}
+
 #sidebar {
     display: block;
     width: 150px;

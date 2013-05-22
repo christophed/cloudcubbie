@@ -22,9 +22,10 @@ read, update, create, delete
 <h5>Todo</h5>
 X   1) Migrate locker rental information to locker.
     2) Permissions: Client creation, master user, CRUD user info, CRUD site info
-    -- Create a Client manager account? In progress
+    -- Create a Client manager account? In progress.
+        X Disallowed same name (although, different caps will do...);
 
-        Make everything "backbone compliant" so just render everything, including dropdowns. Makes it possible to edit items on the spot too.
+        -add client LOCATION && USER controls as done with SITE controls
 
     3) Client CRUD controls
     4) API permissions

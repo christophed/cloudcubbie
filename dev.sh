@@ -1,1 +1,1 @@
-NODE_ENV=dev node server.js
+NODE_ENV=dev node server.js >> logging/console.log

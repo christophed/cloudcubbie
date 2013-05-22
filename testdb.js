@@ -8,7 +8,7 @@ model.Locker.findOne({},function(err, locker) {
         err(console.log(err)); 
     }
     else { 
-        console.log(locker.available); }
+        console.log(locker); }
     }
 );
 
@@ -40,8 +40,9 @@ var user = new model.User({
     email: 'cdchong@stanford.edu',
     notes: 'Yolo',
    
-    username: 'test',
-    password: hash('test') // Should be hashed
+    username: 'admin',
+    password: hash('admin'), // Should be hashed
+    isStaff:true
 });
 
 user.save( function( err ) {
@@ -52,3 +53,8 @@ user.save( function( err ) {
         console.log( err );
     }
 });
+
+// New site
+var mongoose = require( 'mongoose' ); //MongoDB integration
+mongoose.connect('mongodb://localhost/cloudcubbie_dev' );
+var model = require('./models/facilityModel');
