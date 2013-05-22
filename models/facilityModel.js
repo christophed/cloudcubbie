@@ -12,6 +12,7 @@ var siteSchema = new mongoose.Schema({
 // Locations provide exact granulaity within sites
 var locationSchema = new mongoose.Schema({
 
+    client: { type: mongoose.Schema.Types.ObjectId, ref: 'Client'},
     site: { type: mongoose.Schema.Types.ObjectId, ref: 'Site'},
     name: String,
     notes: String

@@ -61,8 +61,9 @@ require('./routes/user/login')(app);
 // User/client views
 require('./routes/client/client')(app);
 
-// Client creation
+// Client/User creation (Staff)
 require('./routes/client/api')(app);
+require('./routes/user/api')(app);
 
 // Client site and locker views
 require('./routes/site/api')(app);

@@ -58,3 +58,8 @@ user.save( function( err ) {
 var mongoose = require( 'mongoose' ); //MongoDB integration
 mongoose.connect('mongodb://localhost/cloudcubbie_dev' );
 var model = require('./models/facilityModel');
+
+model.User.find({username:'cdchong'}, function(err, users) {
+    console.log(users);
+});
+

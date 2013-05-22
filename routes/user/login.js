@@ -1,18 +1,15 @@
-var passwordHash = require('password-hash');
 var model = require('../../models/clientModel');
 
-var hash = function(password) {
-    return passwordHash.generate(password, {algorithm:'sha1', saltLength:16, iterations:1000});
-}
-
-var verify = function(password, hash) {
-    return passwordHash.verify(password, hash);
-}
+var verify = require('../../utilities/password').verify;
 
 
 module.exports = function(app) {    
     
     app.post('/login', function(request, response) {
+        if (request.session.user) {
+            return response.render('home.jade');
+        }
+
         var username = request.body.username;
         var password = request.body.password;
         var nextUrl = typeof request.body.next !== 'undefined' ? request.body.nextUrl : '/';

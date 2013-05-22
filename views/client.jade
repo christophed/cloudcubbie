@@ -32,4 +32,19 @@ block content
         <button class='cancel-add'>Cancel</button>
     </span>
 
+  script(type='text/template',id='user-controls-template').
+    <select class='select-entity'>
+      <option>Choose a <%= entityType %></option>
+    </select>
+    <button class='add-button'>Add <%= entityType %></button>
+    <span hidden class='add-form'>
+      <input name='firstName' placeholder='First name'></input>
+      <input name='lastName' placeholder='Last name'></input>
+      <input name='username' placeholder='Username'></input>
+      <input name='email' placeholder='Email'></input>
+      <input name='password' type='password' placeholder='Password'></input>
+        <button class='submit-add'>Submit</button>
+        <button class='cancel-add'>Cancel</button>
+    </span>
+
   script(type='text/javascript',src='/js/pages/client-app.js')

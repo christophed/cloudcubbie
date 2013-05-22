@@ -12,9 +12,10 @@ jQuery.get( '/api/locations/', function( data, textStatus, jqXHR ) {
 
 module.exports = function(app) {
 
-    // Get all locations
+    // Get all locations for a site
     app.get('/api/location', function(request,response) {
         var site = request.query.site;
+        console.log(site);
 
         if (site !== 'undefined') {
             return model.Location.find( {site: site}, function( err, locations) {
@@ -45,14 +46,23 @@ module.exports = function(app) {
 
     //Insert a new location
     app.post( '/api/location', function( request, response ) {
+        var params = ['client', 'site', 'name', 'notes'];
+        var attrs = {};
 
-        var location = new model.Location({
-            name: request.body.name,
-            site: request.body.site
-        });
+        // Set or clear rental parameters
+        for (var i = 0; i < params.length; i++) {
+            var param = params[i];
+
+            if (typeof request.body[param] !== 'undefined') {
+                attrs[param] = request.body[param];
+            }
+        }
+
+        var location = new model.Location(attrs);
+
         location.save( function( err ) {
             if( !err ) {
-                console.log( 'created' );
+                console.log( 'created location:' + location );
                 response.send(location);
             } 
             else {
