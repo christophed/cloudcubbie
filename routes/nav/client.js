@@ -5,7 +5,8 @@ module.exports = function(app) {
     app.get('/', userAuth.verifyClientAccess, function(request,response) {
 
         response.render('home.jade', {
-            isStaff: request.session.user.isStaff,           
+            isStaff: request.session.user.isStaff,
+            user: request.session.user
         });
     });
 }

@@ -8,23 +8,10 @@ body {
     background-color: #ccc;
 }
 
-h1 {background-color:white;}
+h1 {}
 
 #container {
-    padding-top:5px;
-    margin:10px;
-    min-height:300px; /* for the corners */
-
-    background-color:white;
-
-    /* Corners */
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-
-    /* Shadow */
-    -moz-box-shadow: 2px 2px 1px 1px #555555;
-    -webkit-box-shadow: 2px 2px 1px 1px #555555;
-    box-shadow: 2px 2px 1px 1px #555555;
+    
 
 }
 
@@ -37,16 +24,13 @@ h1 {background-color:white;}
 }
 
 #banner .control {
-    float:right;
-    padding-right:40px;
+    padding-left:150px;
 }
 
 #sidebar {
     display: block;
     width: 150px;
     float:left;
-    background-color:white;
-    
 }
 
 #sidebar ul {
@@ -54,10 +38,25 @@ h1 {background-color:white;}
 }
 
 #content {
+    /* Boxing this area */
+    background-color:white;
+    margin:10px;
+    padding:20px;
+    min-height:300px; /* for the corners */
+
+    /* Corners */
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+
+    /* Shadow */
+    -moz-box-shadow: 2px 2px 1px 1px #555555;
+    -webkit-box-shadow: 2px 2px 1px 1px #555555;
+    box-shadow: 2px 2px 1px 1px #555555;
+
+    /* Table elements */
     display:table;
     min-width:600px; width: auto !important;
     width: 800px;
-    padding:10px;
     padding-top:0px;
     padding-bottom:20px;
 }

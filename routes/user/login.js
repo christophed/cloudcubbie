@@ -27,6 +27,7 @@ module.exports = function(app) {
                     // Homepage
                     return response.render('home.jade', {
                         isStaff: request.session.user.isStaff,
+                        user: request.session.user
                     });
                 }
             }
