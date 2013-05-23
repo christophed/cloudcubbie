@@ -18,7 +18,8 @@ module.exports = function(app) {
                 response.render('client.jade', {
                     clients: clients,
                     isStaff: request.session.user.isStaff,
-                    layout: false
+                    layout: false,
+                    user: request.session.user
                 });
             }
         });        

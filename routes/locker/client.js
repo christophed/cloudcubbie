@@ -15,6 +15,7 @@ module.exports = function(app) {
                     layout:false,
                     sites: sites,
                     isStaff: request.session.user.isStaff,
+                    user: request.session.user
                 });
                 // console.log('found');
             }

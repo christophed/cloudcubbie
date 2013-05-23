@@ -1,4 +1,4 @@
-// locker-backbone.js
+// locker-app.js
 
 var app = app || {};
 
@@ -348,7 +348,14 @@ app.LockerListView = Backbone.View.extend({
     },
 
     sortLockers: function() {
-        this.collection.comparator = this.$el.find('#sort-locker :selected').val();
+        var comparator = this.$el.find('#sort-locker :selected').val();
+        if (comparator === 'number') {
+            this.collection.comparator = function(model) { return parseInt(model.get('name')); };
+        }
+        else {
+            this.collection.comparator = comparator;
+        }
+        
         this.collection.sort();
         this.render();
     },

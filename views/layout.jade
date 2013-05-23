@@ -15,17 +15,19 @@ html
         h1 
           a(href="/") CloudCubbie
         .control
-          a(href="/logout") Logout
+          a(href="/logout") Logout #{user.username}
       #sidebar
         ul
           - if (typeof isStaff !== 'undefined' && isStaff) {
             li
-              a(href="/client") Staff
+              a(href="/client") Site
+          - } else {
+            li
+              a(href="/site") Site  
           - }
           li
-            a(href="/site") Site  
-          li
             a(href="/locker") Locker
+          
 
       #content
         block content

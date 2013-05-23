@@ -47,6 +47,9 @@ module.exports = function(app) {
         if (typeof request.body.client !== 'undefined') {
             attrs["client"] = request.body.client;
         }
+        else {
+            return response.send(400, "Need to specify a client!");
+        }
         var site = new model.Site(attrs);
         site.save( function( err ) {
             if( !err ) {

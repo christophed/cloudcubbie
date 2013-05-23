@@ -12,11 +12,10 @@ h1 {}
 
 #container {
     
-
 }
 
 #banner {
-    margin-left:38px;
+    padding-left:38px;
 }
 
 #banner * {
@@ -24,7 +23,7 @@ h1 {}
 }
 
 #banner .control {
-    padding-left:150px;
+    padding-left:500px;
 }
 
 #sidebar {

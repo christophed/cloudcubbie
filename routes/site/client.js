@@ -16,6 +16,7 @@ module.exports = function(app) {
                     sites: sites,
                     layout: false,
                     isStaff: request.session.user.isStaff,
+                    user: request.session.user,
                 });
             }
         });        

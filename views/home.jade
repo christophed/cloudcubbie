@@ -2,7 +2,7 @@ extends layout
 
 block content
   - if (typeof user !== 'undefined' && user.client)
-    h3 Welcome to your CloudCubbie account for #{ user.client }!
+    h3 Welcome to your CloudCubbie account #{ user.firstName }!
   - else
     h3 Welcome to CloudCubbie!
 
