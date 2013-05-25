@@ -223,6 +223,8 @@ module.exports = function(app) {
                 }
             }
 
+            // TODO -- check for legitimacy of ID and locker taken by ID
+
             // Save
             return locker.save( function( err ) {
                 if ( ! err ) {

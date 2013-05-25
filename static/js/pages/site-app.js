@@ -31,13 +31,61 @@ app.ModelListView = Backbone.View.extend({
     }
 });
 
+// Location view
+app.LocationListView = app.ModelListView.extend({
+    el: '#location-controls',
+
+    submitAdd: function() {
+        var name = this.$el.find('.add-form [name="name"]').val();
+        
+        var self = this;
+
+        $.ajax({
+            url: '/api/location',
+            type:'POST',
+            data: {name: name, client: this.client, site:this.site},
+            success: function(location) {
+                self.toggleAddForm();
+                
+                var optionTemplate = '<option id="<%= _id %>"><%- name %></option>';
+                self.$el.find('.select-entity').append(_.template(optionTemplate, location));
+            },
+            error: function(err) {
+                alert(err);
+            }
+        });
+        return false;
+    },
+
+    initialize: function() {
+        this.collection = new app.ModelList();
+
+        this.listenTo( this.collection, 'reset', this.render );
+
+        this.collection.rootUrl = '/api/location/';
+    },
+
+    renderLocationOptions: function(location, context) {
+        var optionTemplate = '<option id="<%= id %>"><%- name %></option>';
+        context.$el.find('.select-entity').append(_.template(optionTemplate, location.toJSON()));
+    },
+
+    render: function() {
+        var template = $("#controls-template").html();
+        this.$el.html( _.template(template, {entityType: 'location'}) );
+        this.collection.each(function(location) {
+            this.renderLocationOptions(location, this);
+        }, this);
+    }
+});
+
 // Site List
 app.SiteListView = app.ModelListView.extend({
     el: '#site-controls',
 
     submitAdd: function() {
         var name = this.$el.find('.add-form [name="name"]').val();
-        
+
         var self = this;
 
         $.ajax({
@@ -51,7 +99,8 @@ app.SiteListView = app.ModelListView.extend({
                 self.$el.find('.select-entity').append(_.template(optionTemplate, site));
             },
             error: function(err) {
-                alert(err);
+                console.log(err);
+                alert(err.responseText);
             }
         });
         return false;
@@ -74,32 +123,32 @@ app.SiteListView = app.ModelListView.extend({
 
 // MAIN
 app.BodyView = Backbone.View.extend({
-    el: $('#client-app'),
+    el: $('#site-app'),
 
     initialize: function() {
         this.siteListView = new app.SiteListView();
-        // this.siteListView.client = ;
-        // this.locationListView = new app.LocationListView();
+        this.siteListView.client = this.siteListView.$el.find('.add-form [name="client"]').val();
+        this.locationListView = new app.LocationListView();
         // this.userListView = new app.userListView();
     },
 
     events: {
         'change #site-controls .select-entity': 'selectedSite',
-        'change #location-controls .select-entity': 'selectedLocation',
+        'change #location-controls .select-entity': 'selectedLocation'
     },
 
     selectedSite: function() {
-        var siteID = this.$el.find('#site-controls .select-entity :selected').attr('id');
+        
+        var siteID = this.siteListView.$el.find('.select-entity :selected').attr('id');
         if (siteID) {
-            alert(siteID);
-            // this.locationListView.client = clientID;
-            // this.locationListView.site = siteID;
-            // this.locationListView.collection.url = this.locationListView.collection.rootUrl + "?site=" + siteID;
-            // this.locationListView.collection.fetch({reset:true});
-            // this.locationListView.render();
+            this.locationListView.client = this.siteListView.client;
+            this.locationListView.site = siteID;
+            this.locationListView.collection.url = this.locationListView.collection.rootUrl + "?site=" + siteID;
+            this.locationListView.collection.fetch({reset:true});
+            this.locationListView.render();
         }
         else {
-            // this.locationListView.reset();
+            this.locationListView.reset();
         }
     },
 
