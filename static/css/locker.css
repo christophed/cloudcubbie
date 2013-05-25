@@ -4,11 +4,16 @@
 }
 
 body {
-    /*background-color:#5CADFF;*/
-    background-color: #ccc;
+    /*background-color: #ccc;*/
+    background-image:url('/img/linen.png');
 }
 
 h1 {}
+
+.logo {
+    width:300px;
+    height:auto;
+}
 
 #container {
     
@@ -41,11 +46,11 @@ h1 {}
     background-color:white;
     margin:10px;
     padding:20px;
-    min-height:300px; /* for the corners */
+/*    min-height:300px; /* for the corners */*/
 
     /* Corners */
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
 
     /* Shadow */
     -moz-box-shadow: 2px 2px 1px 1px #555555;

@@ -55,6 +55,7 @@ app.LockerView = Backbone.View.extend({
         'click .edit-button': 'editRentPressed',
         'click .submit-button': 'submitRentPressed',
         'click .remove-rental-button': 'removeRentPressed',
+        'blur  input[name="memberID"]': 'checkMemberID',
 
         'click .destroy': 'destroyPressed',
         'sync': 'render',
@@ -173,6 +174,50 @@ app.LockerView = Backbone.View.extend({
     },
 
 //  RENTAL CONTROL
+    checkMemberID: function() {
+        // only on edit should fire
+
+        var memberID = this.$el.find('input[name="memberID"]').val();
+        var messageEl = this.$el.find('input[name="memberID"] + .input-message');
+        var location = this.model.get('location');
+        messageEl.text('Checking user...');
+        messageEl.css('color', 'black');
+        messageEl.show();
+
+        var lockerView = this;
+
+        $.ajax({
+            url: '/api/locker/verifyID',
+            type: 'GET',
+            data: {id: memberID, location: location},
+            error: function(error) {
+                messageEl.text('Cannot verify ID');
+                messageEl.css('color', 'red');
+                console.log(error);
+            },
+            success: function(message) {
+                if (message.success) {
+                    messageEl.css('color', 'green');
+                    messageEl.text("Verified member");
+                    var attrs = ['firstName', 'lastName', 'phone', 'email'];
+                    var memberInfo = message.member;
+                    for (var i = 0; i < attrs.length; i++) {
+                        var param = attrs[i];
+                        if (memberInfo[param]) {
+                            lockerView.$el.find('.rent-form input[name="' + param + '"]').val(memberInfo[param]);
+                        }
+                    }
+                }
+                else {
+                    messageEl.css('color', 'red');
+                    messageEl.text(message.text);
+                }
+                
+            }
+        });
+
+    },
+
     submitRentPressed: function() {
         var attrs = {};
 
@@ -203,15 +248,28 @@ app.LockerView = Backbone.View.extend({
 
     removeRentPressed: function() {
         var lockerView = this;
-        this.model.save({available: true}, {
-            patch: true,
-            error: function(error) {
-                // TODO SHOW ERRORS
-                console.log(err);
-            },
-            success: function() {
-                lockerView.render();
-            }
+
+        $('#message-dialog').text('Are you sure you want to delete this rental?');
+
+        $('#message-dialog').dialog({
+            title: "Confirm",
+            draggable:false,
+            modal: true,
+            buttons: [ 
+                { text: "Delete", click: function() { $( this ).dialog( "close" ); 
+                    lockerView.model.save({available: true}, {
+                    patch: true,
+                    error: function(error) {
+                        // TODO SHOW ERRORS
+                        console.log(err);
+                    },
+                    success: function() {
+                        lockerView.render();
+                    }
+                });
+                } },
+                { text: "Cancel", click: function() { $( this ).dialog( "close" ); } }
+            ]
         });
 
         return false;
@@ -268,7 +326,7 @@ app.LockerView = Backbone.View.extend({
 
         this.$el.html(tmpl( this.model.toJSON() ));
 
-        this.$el.find('input[name="startDate"]').datepicker({ dateFormat: 'D M dd yy' });
+        this.$el.find('input[name="startDate"]').datepicker({ dateFormat: 'D M dd yy'});
         this.$el.find('input[name="endDate"]').datepicker({ dateFormat: 'D M dd yy' });
 
         return this;
@@ -288,7 +346,7 @@ app.LockerListView = Backbone.View.extend({
     initialize: function() {
         this.collection = new app.LockerList();
         
-        this.collection.comparator = 'name';
+        this.collection.comparator = function(model) { return parseInt(model.get('name')); };
         
         this.listenTo( this.collection, 'add', this.renderLocker );
         this.listenTo( this.collection, 'reset', this.render );
@@ -382,7 +440,7 @@ app.LockerListView = Backbone.View.extend({
         this.collection.each(function(locker) {
             this.renderLocker( locker );
         }, this );
-        this.$el.find('input[name="startDate"]').datepicker({ dateFormat: 'D M dd yy' });
+        this.$el.find('input[name="startDate"]').datepicker({ dateFormat: 'D M dd yy'});
         this.$el.find('input[name="endDate"]').datepicker({ dateFormat: 'D M dd yy' });
     }
 });
@@ -395,7 +453,7 @@ app.LocationsView = Backbone.View.extend({
     },
 
     fetch: function() {
-        this.$el.find('input[name="startDate"]').datepicker({ dateFormat: 'D M dd yy' });
+        this.$el.find('input[name="startDate"]').datepicker({ dateFormat: 'D M dd yy'});
         this.$el.find('input[name="endDate"]').datepicker({ dateFormat: 'D M dd yy' });   
     }
 });

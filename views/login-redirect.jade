@@ -8,9 +8,9 @@ html
   body
     #container
       #banner
-        h1 
-          a(href="/") CloudCubbie
-
+        a(href="/")
+          img(src="/img/cloudcubbie_logo.png",class='logo',alt='CloudCubbie')
+          
       #content
         div(class='login')
           h3 You must log in to continue.
@@ -39,7 +39,6 @@ html
           $('#login-form input[name]').each(function() {
 
             var inputVal = $(this).val();
-            console.log(inputVal);
               if (typeof inputVal === 'undefined' || inputVal.length == 0) {
                 isEntered = false;
               }

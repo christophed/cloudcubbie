@@ -1,6 +1,7 @@
 // /locker/location/:id/locker/:id
 
 var model = require('../../models/lockerModel');
+var Member = require('../../models/memberModel').Member;
 
 module.exports = function(app) {
 
@@ -21,6 +22,45 @@ module.exports = function(app) {
         else {
             return response.send(400, 'Must specify locker location.');
         }        
+    });
+
+    // Verify USER id
+    app.get('/api/locker/verifyID', function(request, response) {
+        // Check validity of ID
+        var memberID = request.query.id;
+        var location = request.query.location;
+        Member.findOne({client: request.session.user.client, memberID: memberID}, function(err, member) {
+            if (! err ) {
+                if (member) {
+                    model.Locker.findOne({ location: location, memberID: memberID, available: false  }, function(err, locker) {
+                        if ( ! err ) {
+                            // Already rented
+                            if (locker) {
+                                return response.send({success: false, text: 'User is renting locker "' + locker.name +'" at this location' });
+                            }    
+                            else {
+                                return response.send({success: true, member:member});
+                            }
+                        }
+
+                        else {
+                            return response.send({success: false, text: "Cannot verify ID"});
+                            console.log(err);
+                        }
+                        
+                    });    
+                }
+                else {
+                    return response.send({success: false, text: "User is not in the system"});
+                }
+            }
+            else {
+                console.log(err);
+                return response.send({success: false, text: "Cannot verify ID"});    
+            }
+            
+        });
+        
     });
 
     // new api

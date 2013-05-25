@@ -26,7 +26,7 @@ user.save( function( err ) {
 // Test
 var client = new model.Client( {
     name: 'Stanford'
-})
+});
 
 client.save(function( err ) {
     if ( !err ) {
