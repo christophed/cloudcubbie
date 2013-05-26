@@ -13,6 +13,7 @@ module.exports = function(app) {
 
     });
 
+    // Login
     app.post('/', function(request, response) {
 
         if (request.session.user) {
@@ -48,4 +49,11 @@ module.exports = function(app) {
             return response.send(401, "Login error");
         });
     });
+
+    app.get('/about', userAuth.verifyClientAccess, function(request, response) {
+        return response.render('about.jade', {
+            user: request.session.user
+        });
+    });
+
 }

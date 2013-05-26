@@ -183,7 +183,7 @@ app.LockerView = Backbone.View.extend({
         if (memberID === '') {
             messageEl.text('Required field');
             messageEl.css('color', 'red');
-            messageEl.show();    
+            messageEl.show();
             return;
         }
         if (memberID === this.previousMemberID || memberID === this.model.get('memberID')) {
@@ -256,6 +256,7 @@ app.LockerView = Backbone.View.extend({
 
     editRentPressed: function() {
         this.$el.find('.rental-label').hide();
+        this.$el.find('.input-message').hide();
         this.$el.find('.rental-input').show();
         return false;
     },
@@ -315,8 +316,8 @@ app.LockerView = Backbone.View.extend({
     },
 
     toggleRent: function() {
-        this.$el.find('.callout-arrow').toggle();
-        this.$el.find('.rent-form').toggle();
+        this.$el.find('.callout-arrow').toggle({duration:200});
+        this.$el.find('.rent-form').toggle({duration:300});
     },
 
 // DISPLAY
