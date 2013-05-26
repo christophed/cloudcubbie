@@ -10,7 +10,7 @@ html
       #banner
         a(href="/").no-shadow
           img(src="/img/cloudcubbie_logo.png",class='logo',alt='CloudCubbie')
-        span.beta beta
+        span.beta &beta;eta
         .control
           a(href='#',class='toggle-login-button') Login
           a(href='#',class='toggle-pricing') Pricing
@@ -34,15 +34,18 @@ html
                 button.toggle-login-button Cancel
       
 
-      h1 Put your facility management in the cloud.
+      h1(hidden) Put your facility management in the cloud.
       div(hidden).pricing-info
-        h3.no-shadow We are currently in closed beta. 
-        p Pricing is customized for all of our beta customers.
+        span
+          h3.no-shadow We are currently in closed beta. 
+          p Pricing is customized for all of our beta customers.
         
     script(type='text/javascript').
       
 
       $(function() {
+
+        $('h1').fadeIn({duration:1700});
 
         // Show login
         $('.toggle-pricing').click(function() {

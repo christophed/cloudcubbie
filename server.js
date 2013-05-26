@@ -44,9 +44,9 @@ app.configure('dev', function() {
     app.set('view options', { pretty: true });
 
     // Some jitter to simulate latency
-    // app.get('/api*', function(req,res,next) {
-    //     setTimeout(next, Math.random() * 1000 + 300);
-    // });
+    app.get('/api*', function(req,res,next) {
+        setTimeout(next, Math.random() * 1000 + 300);
+    });
 });
 
 // Connect to DB
