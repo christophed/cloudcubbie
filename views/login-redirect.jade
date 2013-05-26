@@ -3,36 +3,60 @@ html
   head
     script(src="js/lib/jquery.min.js")
 
-    link(rel="stylesheet",type="text/css",href="/css/locker.css")
+    link(rel="stylesheet",type="text/css",href="/css/splash.css")
 
   body
     #container
       #banner
-        a(href="/")
+        a(href="/").no-shadow
           img(src="/img/cloudcubbie_logo.png",class='logo',alt='CloudCubbie')
+        span.beta beta
+        .control
+          a(href='#',class='toggle-login-button') Login
+          a(href='#',class='toggle-pricing') Pricing
           
-      #content
-        div(class='login')
-          h3 You must log in to continue.
-          form(method='post',action="/",id='login-form')
-            input(hidden,name='next',value='#{url}')
-            table
-              tr
-                td
-                  label Username
-                td
-                  input(type='text',name='username',class='user-input')
-              tr
-                td
-                  label Password
-                td
-                  input(type='password',name='password',class='user-input')
-              tr
-                td
-                  button Login    
+      div(class='login',hidden)
+        form(method='post',action="/",id='login-form')
+          table
+            tr
+              td
+                label Username
+              td
+                input(type='text',name='username',class='user-input')
+            tr
+              td
+                label Password
+              td
+                input(type='password',name='password',class='user-input')
+            tr
+              td
+                button.submit-button Login
+                button.toggle-login-button Cancel
+      
+
+      h1 Put your facility management in the cloud.
+      div(hidden).pricing-info
+        h3.no-shadow We are currently in closed beta. 
+        p Pricing is customized for all of our beta customers.
+        
     script(type='text/javascript').
+      
+
       $(function() {
-        $('#login-form button').attr('disabled', 'disabled');
+
+        // Show login
+        $('.toggle-pricing').click(function() {
+          $('.pricing-info').toggle({duration:300});
+          return false;
+        });
+
+        $('.toggle-login-button').click(function() {
+          $('.login').toggle({duration:500});
+          return false;
+        });
+
+        // Enable/disable form
+        $('#login-form .submit-button').attr('disabled', 'disabled');
 
         $('#login-form .user-input').keyup(function(){
           var isEntered = true;
@@ -45,10 +69,10 @@ html
 
           });
           if (isEntered) {
-            $('#login-form button').removeAttr('disabled');
+            $('#login-form .submit-button').removeAttr('disabled');
           }
           else {
-            $('#login-form button').attr('disabled', 'disabled');
+            $('#login-form .submit-button').attr('disabled', 'disabled');
           }
         })  
 
