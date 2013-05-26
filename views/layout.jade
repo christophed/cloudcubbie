@@ -15,10 +15,12 @@ html
         a(href="/")
           img(src="/img/cloudcubbie_logo.png",class='logo',alt='CloudCubbie')
         .control
+          a(href="/about") About
           a(href="/logout") Logout #{user.username}
+
       #sidebar
         ul
-          - if (typeof isStaff !== 'undefined' && isStaff) {
+          - if (typeof user.isSatff !== 'undefined' && isStaff) {
             li
               a(href="/client") Site
           - } else {

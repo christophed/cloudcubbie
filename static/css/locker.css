@@ -1,6 +1,5 @@
 * {
     font-family:helvetica;
-    color:#353535;
 }
 
 body {
@@ -16,7 +15,7 @@ h1 {}
 }
 
 #container {
-    
+
 }
 
 #banner {
@@ -25,13 +24,16 @@ h1 {}
 
 #banner * {
     display:inline-block;
+    color:white;
+    font-size:20px;
 }
 
-#banner .control {
-    padding-left:500px;
+#banner .control * {
+    padding-left:25px;
 }
 
 #sidebar {
+    color:#FF9933;
     display: block;
     width: 150px;
     float:left;
@@ -39,6 +41,11 @@ h1 {}
 
 #sidebar ul {
     list-style-type: none;
+}
+
+#sidebar * {
+    color:white;
+    font-size:20px;
 }
 
 #content {
@@ -49,13 +56,13 @@ h1 {}
 /*    min-height:300px; /* for the corners */*/
 
     /* Corners */
-    -moz-border-radius: 2px;
-    border-radius: 2px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
 
     /* Shadow */
-    -moz-box-shadow: 2px 2px 1px 1px #555555;
+    /*-moz-box-shadow: 2px 2px 1px 1px #555555;
     -webkit-box-shadow: 2px 2px 1px 1px #555555;
-    box-shadow: 2px 2px 1px 1px #555555;
+    box-shadow: 2px 2px 1px 1px #555555;*/
 
     /* Table elements */
     display:table;
@@ -161,7 +168,7 @@ button:hover {
     top:40px;
     background-color: white;
     padding:15px;
-    width:200px;
+    width:180px;
 }
 
 .rent-form label {
@@ -176,7 +183,7 @@ button:hover {
 }
 
 button:disabled {
-    color:gray;    
+    color:#ccc;    
 }
 button:disabled:hover {
     

@@ -179,6 +179,20 @@ app.LockerView = Backbone.View.extend({
 
         var memberID = this.$el.find('input[name="memberID"]').val();
         var messageEl = this.$el.find('input[name="memberID"] + .input-message');
+
+        if (memberID === '') {
+            messageEl.text('Required field');
+            messageEl.css('color', 'red');
+            messageEl.show();    
+            return;
+        }
+        if (memberID === this.previousMemberID || memberID === this.model.get('memberID')) {
+            messageEl.hide();
+            return;
+        }
+        this.previousMemberID = memberID;
+
+        
         var location = this.model.get('location');
         messageEl.text('Checking user...');
         messageEl.css('color', 'black');
