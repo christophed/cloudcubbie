@@ -20,17 +20,21 @@ html
 
       #sidebar
         ul
-          - if (typeof user.isSatff !== 'undefined' && isStaff) {
+          h3 Management Console
+          - if (typeof user.isSatff !== 'undefined' && user.isStaff) {
             li
-              a(href="/client") Site
+              a(href="/client") Site App
           - } else {
             li
-              a(href="/site") Site
+              a(href="/site") Site App
           - }
           li
-            a(href="/locker") Locker
+            a(href="/locker") Locker App
           
 
       #content
         block content
-        block footer
+      block footer
+        .footer
+          ul
+            li Copyright @ 2013 CloudCubbie
