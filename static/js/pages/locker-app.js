@@ -375,7 +375,10 @@ app.LockerListView = Backbone.View.extend({
         'click .add-lockers-cancel-button': 'toggleAddLockersForm',
         'click .add-lockers-button': 'addLockers',
 
-        'change #sort-locker': 'sortLockers'
+        'change #sort-locker': 'sortLockers',
+        'change #filter-locker': 'filterChanged',
+        'click button.filter-lockers-control[name="search"]' :'filterLockers',
+        'click button.filter-lockers-control[name="reset"]' :'resetFilterLockers'
     },
 
     toggleAddLockersForm: function() {
@@ -422,6 +425,11 @@ app.LockerListView = Backbone.View.extend({
 
     sortLockers: function() {
         var comparator = this.$el.find('#sort-locker :selected').val();
+
+        if (!comparator) {
+            return;
+        }
+
         if (comparator === 'number') {
             this.collection.comparator = function(model) { return parseInt(model.get('name')); };
         }
@@ -430,11 +438,43 @@ app.LockerListView = Backbone.View.extend({
         }
         
         this.collection.sort();
-        this.render();
+        this.renderLockers();
+    },
+
+    filterChanged: function() {
+        var filterBy = this.$el.find('#filter-locker :selected').val();
+
+        if (! filterBy) {
+            this.$el.find('.filter-lockers-control').hide();
+            return;
+        }
+        this.$el.find('.filter-lockers-control').show();
+
+    },
+
+    resetFilterLockers: function() {
+        delete this.filterBy;
+        delete this.filterText;
+        delete this.filterExact;
+
+        this.renderLockers();
+    },
+
+    filterLockers: function() {
+        this.filterBy = this.$el.find('#filter-locker :selected').val();
+        this.filterText = this.$el.find('input.filter-lockers-control[type="text"]').val();
+        this.filterExact = this.$el.find('input.filter-lockers-control[type="checkbox"]').prop('checked');
+
+        this.renderLockers();
     },
 
     reset: function() {
         this.$el.html('<div id="lockers"></div>');
+        delete this.collection.comparator;
+        delete this.filterBy;
+        delete this.filterText;
+        delete this.filterExact;
+
     },
 
     renderLocker: function(locker) {
@@ -442,6 +482,43 @@ app.LockerListView = Backbone.View.extend({
             model: locker
         });
         this.$el.find('#lockers').append( lockerView.render().el );
+    },
+
+    renderLockers: function() {
+        this.$el.find('#lockers').html('');
+
+        var filterBy = this.filterBy;
+        var filterText = this.filterText;
+        var filterExact = this.filterExact;
+
+        var filterFunction;
+        if (typeof filterBy !== 'undefined' && typeof filterText !== 'undefined' && typeof filterExact !== 'undefined') {
+            if (filterExact) {
+                filterFunction = function(locker) {
+                    return locker.get(filterBy) === filterText;
+                }
+            }
+            else {
+                filterFunction = function(locker) {
+                    return locker.get(filterBy) && locker.get(filterBy).toLowerCase().indexOf(filterText.toLowerCase()) !== -1;
+                }
+            }
+        }
+
+        this.collection.each(function(locker) {
+            if (filterFunction) {
+                if (filterFunction(locker)) {
+                    this.renderLocker( locker );
+                }
+            }
+            else {
+                this.renderLocker( locker );    
+            }
+
+        }, this );
+
+        this.$el.find('input[name="startDate"]').datepicker({ dateFormat: 'D M dd yy'});
+        this.$el.find('input[name="endDate"]').datepicker({ dateFormat: 'D M dd yy' });
     },
 
     render: function() {
@@ -452,11 +529,7 @@ app.LockerListView = Backbone.View.extend({
 
         this.$el.find('.add-lockers-form').toggle();
 
-        this.collection.each(function(locker) {
-            this.renderLocker( locker );
-        }, this );
-        this.$el.find('input[name="startDate"]').datepicker({ dateFormat: 'D M dd yy'});
-        this.$el.find('input[name="endDate"]').datepicker({ dateFormat: 'D M dd yy' });
+        this.renderLockers();
     }
 });
 
@@ -488,7 +561,7 @@ app.BodyView = Backbone.View.extend({
         'click #changeCollection': 'toggleCollection',
         'change #site-picker': 'updateLocations',
         'change #location-picker': 'updateLockers',
-        'change #layout-form input[type=radio]': 'updateLayout'
+        'change #layout-form input[type=radio]': 'updateLayout',
     },
 
     updateLayout: function() {

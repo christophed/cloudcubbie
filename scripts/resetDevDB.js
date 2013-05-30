@@ -74,6 +74,14 @@ mongoose.connection.db.dropDatabase(function(err) {
                         email: 'jameson@stanford.edu',
                         phone: '4082345678',
                         client: client._id
+                    },
+                    {
+                        memberID: '03456789',
+                        firstName: 'James',
+                        lastName: 'Janeson',
+                        email: 'janeson@stanford.edu',
+                        phone: '6503456789',
+                        client: client._id
                     }
                 ];
 

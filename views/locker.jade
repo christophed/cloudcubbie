@@ -9,7 +9,6 @@ block content
 
   h3 Locker Management
   div#locker-app
-
     select#site-picker
       option Choose a site
       - if ('undefined' !== typeof(sites))
@@ -37,7 +36,7 @@ block content
       <% if (name) { %><%= name %><% } else { %> [no name] <% } %>
 
       <button class='edit'>Info</button>
-      <button class='rent'>Rent</button>
+      <button class='rent'><% if (available) { %> Rent <% } else { %> <del>Rent</del> <% } %></button>
     </div>
     
     <div hidden class='callout-arrow'></div>
@@ -122,17 +121,35 @@ block content
       <input type='radio' name='layout' value='grid' checked />
       <input type='radio' name='layout' value='row'/>
     </span>
+    <span class="ui-icon ui-icon-plusthick" style="display:inline-block"></span>
     <button class="show-add-lockers">Add more lockers</button>
     <span class="add-lockers-form">
-      <input type="number" placeholder="10" class="add-lockers-input" value="1"/>
+      <input type="number" placeholder="1-1000" class="add-lockers-input" value="1"/>
       <button class="add-lockers-button">Add</button><button class="add-lockers-cancel-button">Cancel</button>
     </span>
+    <br />
+    <span class="ui-icon ui-icon-carat-2-n-s" style="display:inline-block"></span>
     <select id='sort-locker'>
-      <option>Sort by</option>
+      <option value="">Sort by</option>
       <option value='number'>Locker name as number</option>
       <option value='name'>Locker name alphabetically</option>
       <option value='available'>Availability</option>
     </select>
+    <br />
+    <span class="ui-icon ui-icon-search" style="display:inline-block"></span>
+    <select id='filter-locker'>
+      <option value="">Search by</option>
+      <option value='name'>Locker name</option>
+      <option value='memberID'>Renter&apos;s Member ID</option>
+      <option value='firstName'>Renter&apos;s First name</option>
+      <option value='lastName'>Renter&apos;s Last name</option>
+      <option value='email'>Renter&apos;s Email address</option>
+    </select>
+    <input hidden class='filter-lockers-control' placeholder='Your search query' type='text' />
+    <label hidden class='filter-lockers-control'>Exact</label>
+    <input hidden class='filter-lockers-control' type='checkbox'/>
+    <button hidden class='filter-lockers-control' name='search'>Search</button>
+    <button hidden class='filter-lockers-control' name='reset'>Reset search</button>
     <div id="lockers"></div>
 
   script(type='text/javascript',src='/js/pages/locker-app.js')

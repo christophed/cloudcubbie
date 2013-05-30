@@ -16,6 +16,12 @@ a {
     padding:2px;
 }
 
+input:checked + label {
+    color: #E06666;
+    background-color:#F2E9D8;
+
+}
+
 a:hover {
     background-color:#F2E9D8;
     color:#1C2F40;

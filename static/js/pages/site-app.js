@@ -47,7 +47,7 @@ app.LocationListView = app.ModelListView.extend({
             success: function(location) {
                 self.toggleAddForm();
                 
-                var optionTemplate = '<option id="<%= _id %>"><%- name %></option>';
+                var optionTemplate = '<input type="radio" name="location" id="<%= _id %>" hidden /><label for="<%= _id %>" ><%- name %></label><br/>';
                 self.$el.find('.select-entity').append(_.template(optionTemplate, location));
             },
             error: function(err) {
@@ -66,7 +66,7 @@ app.LocationListView = app.ModelListView.extend({
     },
 
     renderLocationOptions: function(location, context) {
-        var optionTemplate = '<option id="<%= id %>"><%- name %></option>';
+        var optionTemplate = '<input type="radio" name="location" id="<%= _id %>" hidden /><label for="<%= _id %>" ><%- name %></label><br/>';
         context.$el.find('.select-entity').append(_.template(optionTemplate, location.toJSON()));
     },
 
@@ -94,8 +94,8 @@ app.SiteListView = app.ModelListView.extend({
             data: {name: name, client: this.client},
             success: function(site) {
                 self.toggleAddForm();
-                
-                var optionTemplate = '<option name="site" id="<%= _id %>"><%- name %></option>';
+
+                var optionTemplate = '<input type="radio" name="site" id="<%= _id %>" hidden /><label for="<%= _id %>" ><%- name %></label><br/>';
                 self.$el.find('.select-entity').append(_.template(optionTemplate, site));
             },
             error: function(err) {
@@ -107,7 +107,7 @@ app.SiteListView = app.ModelListView.extend({
     },
 
     renderSiteOption: function(site, context) {
-        var optionTemplate = '<option name="site" id="<%= id %>"><%- name %></option>';
+        var optionTemplate = '<input type="radio" name="site" id="<%= _id %>" hidden /><label for="<%= _id %>" ><%- name %></label><br/>';
         context.$el.find('.select-entity').append(_.template(optionTemplate, site.toJSON()));
     },
 
@@ -133,13 +133,14 @@ app.BodyView = Backbone.View.extend({
     },
 
     events: {
-        'change #site-controls .select-entity': 'selectedSite',
-        'change #location-controls .select-entity': 'selectedLocation'
+        'click #site-controls .select-entity input[name="site"]': 'selectedSite',
+        'click #location-controls .select-entity input[name="location"]': 'selectedLocation',
     },
 
     selectedSite: function() {
         
-        var siteID = this.siteListView.$el.find('.select-entity :selected').attr('id');
+        var siteID = this.siteListView.$el.find('.select-entity :checked').attr('id');
+        
         if (siteID) {
             this.locationListView.client = this.siteListView.client;
             this.locationListView.site = siteID;
@@ -165,5 +166,18 @@ app.BodyView = Backbone.View.extend({
 $(function() {
 
     new app.BodyView();
+
+    // AJAX
+    $(document).ajaxStart(function () {
+        $('#ajax-dialog').dialog({
+            dialogClass: "no-close",
+            title: "Loading",
+            modal: true,
+            
+        });
+    }).ajaxStop(function () {
+        $('#ajax-dialog').dialog('close');
+    });
+
 
 });
