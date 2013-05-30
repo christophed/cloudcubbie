@@ -46,8 +46,8 @@ app.LocationListView = app.ModelListView.extend({
             data: {name: name, client: this.client, site:this.site},
             success: function(location) {
                 self.toggleAddForm();
-                
-                var optionTemplate = '<input type="radio" name="location" id="<%= _id %>" hidden /><label for="<%= _id %>" ><%- name %></label><br/>';
+            
+                var optionTemplate = '<span class="ui-icon-carat-1-e ui-icon" style="display:inline-block"></span><input type="radio" name="location" id="<%= _id %>" hidden /><label for="<%= _id %>" ><%- name %></label><br/>';
                 self.$el.find('.select-entity').append(_.template(optionTemplate, location));
             },
             error: function(err) {
@@ -66,7 +66,7 @@ app.LocationListView = app.ModelListView.extend({
     },
 
     renderLocationOptions: function(location, context) {
-        var optionTemplate = '<input type="radio" name="location" id="<%= _id %>" hidden /><label for="<%= _id %>" ><%- name %></label><br/>';
+        var optionTemplate = '<span class="ui-icon-carat-1-e ui-icon" style="display:inline-block"></span><input type="radio" name="location" id="<%= _id %>" hidden /><label for="<%= _id %>" ><%- name %></label><br/>';
         context.$el.find('.select-entity').append(_.template(optionTemplate, location.toJSON()));
     },
 

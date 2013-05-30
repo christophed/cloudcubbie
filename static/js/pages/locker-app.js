@@ -424,6 +424,7 @@ app.LockerListView = Backbone.View.extend({
     },
 
     sortLockers: function() {
+
         var comparator = this.$el.find('#sort-locker :selected').val();
 
         if (!comparator) {
@@ -436,7 +437,6 @@ app.LockerListView = Backbone.View.extend({
         else {
             this.collection.comparator = comparator;
         }
-        
         this.collection.sort();
         this.renderLockers();
     },
@@ -470,7 +470,7 @@ app.LockerListView = Backbone.View.extend({
 
     reset: function() {
         this.$el.html('<div id="lockers"></div>');
-        delete this.collection.comparator;
+
         delete this.filterBy;
         delete this.filterText;
         delete this.filterExact;
@@ -485,6 +485,13 @@ app.LockerListView = Backbone.View.extend({
     },
 
     renderLockers: function() {
+
+        $('#message-dialog').dialog({
+            dialogClass: "no-close",
+            title: "Rendering lockers",
+            modal: true
+        });
+        
         this.$el.find('#lockers').html('');
 
         var filterBy = this.filterBy;
@@ -519,6 +526,8 @@ app.LockerListView = Backbone.View.extend({
 
         this.$el.find('input[name="startDate"]').datepicker({ dateFormat: 'D M dd yy'});
         this.$el.find('input[name="endDate"]').datepicker({ dateFormat: 'D M dd yy' });
+
+        $('#message-dialog').dialog('close');
     },
 
     render: function() {

@@ -9,10 +9,12 @@ block content
 
   div#site-app
     h3 Sites
+    p Click on a site to see its locations.
     div#site-controls
       .select-entity
         - if ('undefined' !== typeof(sites)) {
           - sites.forEach(function(site) {
+            span.ui-icon-carat-1-e.ui-icon(style="display:inline-block")
             input(class='radio',type='radio',name='site',id=site._id,hidden) #{site.name}
             label(for=site._id) #{site.name}
             br
