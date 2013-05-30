@@ -272,7 +272,7 @@ app.LockerView = Backbone.View.extend({
             modal: true,
             buttons: [ 
                 { text: "Delete", click: function() { $( this ).dialog( "close" ); 
-                    lockerView.model.save({available: true}, {
+                    lockerView.model.save({available: true, memberID: ''}, {
                     patch: true,
                     error: function(error) {
                         // TODO SHOW ERRORS

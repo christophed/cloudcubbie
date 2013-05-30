@@ -67,7 +67,8 @@ mongoose.connection.db.dropDatabase(function(err) {
                         email: 'tomson@stanford.edu',
                         phone: '4081234567',
                         client: client._id
-                    }, {
+                    }, 
+                    {
                         memberID: '02345678',
                         firstName: 'Jane',
                         lastName: 'Jameson',
@@ -81,6 +82,86 @@ mongoose.connection.db.dropDatabase(function(err) {
                         lastName: 'Janeson',
                         email: 'janeson@stanford.edu',
                         phone: '6503456789',
+                        client: client._id
+                    },
+                    {
+                        memberID: '00',
+                        firstName: 'James',
+                        lastName: 'Janeson',
+                        email: 'janeson@stanford.edu',
+                        phone: '6503456789',
+                        client: client._id
+                    },
+                    {
+                        memberID: '01',
+                        firstName: 'James',
+                        lastName: 'Bond',
+                        email: 'bond@stanford.edu',
+                        phone: '6509876543',
+                        client: client._id
+                    },
+                    {
+                        memberID: '02',
+                        firstName: 'Ian',
+                        lastName: 'Flemming',
+                        email: 'flemming@stanford.edu',
+                        phone: '6502234567',
+                        client: client._id
+                    },
+                    {
+                        memberID: '03',
+                        firstName: 'Paul',
+                        lastName: 'McCartney',
+                        email: 'mccartney@stanford.edu',
+                        phone: '6503456789',
+                        client: client._id
+                    },
+                    {
+                        memberID: '04',
+                        firstName: 'James',
+                        lastName: 'Patterson',
+                        email: 'patterson@stanford.edu',
+                        phone: '6503234567',
+                        client: client._id
+                    },
+                    {
+                        memberID: '05',
+                        firstName: 'John',
+                        lastName: 'Grisham',
+                        email: 'grisham@stanford.edu',
+                        phone: '6504234567',
+                        client: client._id
+                    },
+                    {
+                        memberID: '06',
+                        firstName: 'James',
+                        lastName: 'Conant',
+                        email: 'conant@stanford.edu',
+                        phone: '6505234567',
+                        client: client._id
+                    },
+                    {
+                        memberID: '07',
+                        firstName: 'David',
+                        lastName: 'Wallace',
+                        email: 'wallace@stanford.edu',
+                        phone: '6506234567',
+                        client: client._id
+                    },
+                    {
+                        memberID: '08',
+                        firstName: 'Tracy',
+                        lastName: 'Austin',
+                        email: 'austin@stanford.edu',
+                        phone: '6507234567',
+                        client: client._id
+                    },
+                    {
+                        memberID: '09',
+                        firstName: 'James',
+                        lastName: 'Gatsby',
+                        email: 'gatsby@stanford.edu',
+                        phone: '6508234567',
                         client: client._id
                     }
                 ];
