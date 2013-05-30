@@ -186,11 +186,10 @@ app.LockerView = Backbone.View.extend({
             messageEl.show();
             return;
         }
-        if (memberID === this.previousMemberID || memberID === this.model.get('memberID')) {
+        if (memberID === this.model.get('memberID')) {
             messageEl.hide();
             return;
         }
-        this.previousMemberID = memberID;
 
         
         var location = this.model.get('location');
