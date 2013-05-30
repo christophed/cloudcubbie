@@ -69,7 +69,7 @@ mongoose.connection.db.dropDatabase(function(err) {
                         client: client._id
                     }, 
                     {
-                        memberID: '02345678',
+                        memberID: '02234567',
                         firstName: 'Jane',
                         lastName: 'Jameson',
                         email: 'jameson@stanford.edu',
@@ -77,7 +77,7 @@ mongoose.connection.db.dropDatabase(function(err) {
                         client: client._id
                     },
                     {
-                        memberID: '03456789',
+                        memberID: '03234567',
                         firstName: 'James',
                         lastName: 'Janeson',
                         email: 'janeson@stanford.edu',
@@ -85,7 +85,7 @@ mongoose.connection.db.dropDatabase(function(err) {
                         client: client._id
                     },
                     {
-                        memberID: '00',
+                        memberID: '04234567',
                         firstName: 'James',
                         lastName: 'Janeson',
                         email: 'janeson@stanford.edu',
@@ -93,7 +93,7 @@ mongoose.connection.db.dropDatabase(function(err) {
                         client: client._id
                     },
                     {
-                        memberID: '01',
+                        memberID: '05234567',
                         firstName: 'James',
                         lastName: 'Bond',
                         email: 'bond@stanford.edu',
@@ -101,7 +101,7 @@ mongoose.connection.db.dropDatabase(function(err) {
                         client: client._id
                     },
                     {
-                        memberID: '02',
+                        memberID: '06234567',
                         firstName: 'Ian',
                         lastName: 'Flemming',
                         email: 'flemming@stanford.edu',
@@ -109,7 +109,7 @@ mongoose.connection.db.dropDatabase(function(err) {
                         client: client._id
                     },
                     {
-                        memberID: '03',
+                        memberID: '07234567',
                         firstName: 'Paul',
                         lastName: 'McCartney',
                         email: 'mccartney@stanford.edu',
@@ -117,7 +117,7 @@ mongoose.connection.db.dropDatabase(function(err) {
                         client: client._id
                     },
                     {
-                        memberID: '04',
+                        memberID: '08234567',
                         firstName: 'James',
                         lastName: 'Patterson',
                         email: 'patterson@stanford.edu',
@@ -125,7 +125,7 @@ mongoose.connection.db.dropDatabase(function(err) {
                         client: client._id
                     },
                     {
-                        memberID: '05',
+                        memberID: '09234567',
                         firstName: 'John',
                         lastName: 'Grisham',
                         email: 'grisham@stanford.edu',
@@ -133,7 +133,7 @@ mongoose.connection.db.dropDatabase(function(err) {
                         client: client._id
                     },
                     {
-                        memberID: '06',
+                        memberID: '02345678',
                         firstName: 'James',
                         lastName: 'Conant',
                         email: 'conant@stanford.edu',
@@ -141,7 +141,7 @@ mongoose.connection.db.dropDatabase(function(err) {
                         client: client._id
                     },
                     {
-                        memberID: '07',
+                        memberID: '03345678',
                         firstName: 'David',
                         lastName: 'Wallace',
                         email: 'wallace@stanford.edu',
@@ -149,7 +149,7 @@ mongoose.connection.db.dropDatabase(function(err) {
                         client: client._id
                     },
                     {
-                        memberID: '08',
+                        memberID: '04345678',
                         firstName: 'Tracy',
                         lastName: 'Austin',
                         email: 'austin@stanford.edu',
@@ -157,7 +157,7 @@ mongoose.connection.db.dropDatabase(function(err) {
                         client: client._id
                     },
                     {
-                        memberID: '09',
+                        memberID: '05345678',
                         firstName: 'James',
                         lastName: 'Gatsby',
                         email: 'gatsby@stanford.edu',

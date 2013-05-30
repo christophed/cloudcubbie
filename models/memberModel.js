@@ -8,7 +8,8 @@ var memberSchema = new mongoose.Schema({
     firstName: String,
     lastName: String,
     email: String,
-    phone: String
+    phone: String,
+    notes: String
 
 });
 
